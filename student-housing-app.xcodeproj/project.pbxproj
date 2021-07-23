@@ -16,6 +16,8 @@
 		0C23AA4926A53CA8003319FA /* SearchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C23AA4826A53CA8003319FA /* SearchScreen.swift */; };
 		0C23AA4B26A7DA03003319FA /* cities.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0C23AA4A26A7DA02003319FA /* cities.txt */; };
 		0C23AA4D26A904B9003319FA /* SimplePosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C23AA4C26A904B9003319FA /* SimplePosts.swift */; };
+		0C23AA4F26A930B4003319FA /* SimpleListing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C23AA4E26A930B4003319FA /* SimpleListing.swift */; };
+		0C23AA5126A933FE003319FA /* FetchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C23AA5026A933FE003319FA /* FetchData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		0C23AA4826A53CA8003319FA /* SearchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreen.swift; sourceTree = "<group>"; };
 		0C23AA4A26A7DA02003319FA /* cities.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cities.txt; sourceTree = SOURCE_ROOT; };
 		0C23AA4C26A904B9003319FA /* SimplePosts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplePosts.swift; sourceTree = "<group>"; };
+		0C23AA4E26A930B4003319FA /* SimpleListing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleListing.swift; sourceTree = "<group>"; };
+		0C23AA5026A933FE003319FA /* FetchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +92,8 @@
 		0C23AA3F26A51677003319FA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0C23AA4E26A930B4003319FA /* SimpleListing.swift */,
+				0C23AA5026A933FE003319FA /* FetchData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -188,9 +194,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C23AA4626A522BC003319FA /* HomeScreen.swift in Sources */,
+				0C23AA5126A933FE003319FA /* FetchData.swift in Sources */,
 				0C23AA2C26A51643003319FA /* AppDelegate.swift in Sources */,
 				0C23AA4D26A904B9003319FA /* SimplePosts.swift in Sources */,
 				0C23AA2E26A51643003319FA /* SceneDelegate.swift in Sources */,
+				0C23AA4F26A930B4003319FA /* SimpleListing.swift in Sources */,
 				0C23AA4926A53CA8003319FA /* SearchScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

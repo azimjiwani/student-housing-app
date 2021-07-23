@@ -10,8 +10,22 @@ import UIKit
 class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var listingsTable = UITableView()
+    var fetchData = FetchData()
+    var listings = [SimpleListing]()
+    {
+        didSet
+        {
+            DispatchQueue.main.async{
+                self.listingsTable.reloadData()
+            }
+        }
+    }
+    var listingArray = [SimpleListing]()
 
     override func viewDidLoad() {
+        
+        fetchData.fetchData{listingArray in self.listings = [listingArray!]}
+        
         super.viewDidLoad()
         view.backgroundColor = .white
         setupView()
@@ -77,14 +91,15 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         ])
     }
     
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        
-//    }
-//    
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath as IndexPath)
-//        
-//    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return listings.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath as IndexPath)
+        cell.textLabel?.text = self.listings[indexPath.row].listing_title
+        return cell
+    }
     
 //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //
