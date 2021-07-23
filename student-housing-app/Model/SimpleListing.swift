@@ -7,18 +7,18 @@
 
 import Foundation
 
-struct SimpleListing: Codable {
+public struct SimpleListing: Codable {
     let listing_title : String
-    let price : String?
-    let bed : Int?
-    let bath : Float?
-    let address: String?
-    let post_text : String?
-    let post_url : URL?
-    let lease : Bool?
-    let sublease : Bool?
-    let sublet : Bool?
-    let utilities : String?
-    let latitude : Float?
-    let longitude : Float?
+//    let price : String?
+//    let bed : String?
+//    let bath : String?
+//    let address: String?
+//    let post_text : String?
+//    let post_url : URL?
+//    let lease : Bool?
+//    let sublease : Bool?
+//    let sublet : Bool?
+//    let utilities : String?
+//    let latitude : String?
+//    let longitude : String?
 }

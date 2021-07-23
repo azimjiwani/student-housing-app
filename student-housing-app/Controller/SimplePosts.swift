@@ -12,19 +12,16 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     var listingsTable = UITableView()
     var fetchData = FetchData()
     var listings = [SimpleListing]()
-    {
-        didSet
-        {
-            DispatchQueue.main.async{
-                self.listingsTable.reloadData()
-            }
-        }
-    }
-    var listingArray = [SimpleListing]()
+//    var listingArray = [SimpleListing]()
 
     override func viewDidLoad() {
         
-        fetchData.fetchData{listingArray in self.listings = [listingArray!]}
+        fetchData.fetchData{
+            listingArray in self.listings = listingArray
+            DispatchQueue.main.async{
+            self.listingsTable.reloadData()
+            }
+        }
         
         super.viewDidLoad()
         view.backgroundColor = .white
