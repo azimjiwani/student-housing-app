@@ -9,16 +9,16 @@ import Foundation
 
 public struct SimpleListing: Codable {
     let listing_title : String
-//    let price : String?
-//    let bed : String?
-//    let bath : String?
-//    let address: String?
-//    let post_text : String?
-//    let post_url : URL?
+    let price : Float
+    let bed : Float
+    let bath : Float
+    let address: String
+    let post_text : String
+    let post_url : URL
 //    let lease : Bool?
-//    let sublease : Bool?
 //    let sublet : Bool?
 //    let utilities : String?
-//    let latitude : String?
-//    let longitude : String?
+    let latitude : Float
+    let longitude : Float
+    let images_lowquality : [URL]?
 }

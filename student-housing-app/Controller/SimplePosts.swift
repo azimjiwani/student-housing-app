@@ -12,7 +12,6 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     var listingsTable = UITableView()
     var fetchData = FetchData()
     var listings = [SimpleListing]()
-//    var listingArray = [SimpleListing]()
 
     override func viewDidLoad() {
         
@@ -98,8 +97,10 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         return cell
     }
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//
-//    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let detailedListing = DetailedListing()
+        detailedListing.listingTitle = self.listings[indexPath.row].listing_title
+        self.navigationController?.pushViewController(detailedListing, animated: true)
+    }
 
 }
