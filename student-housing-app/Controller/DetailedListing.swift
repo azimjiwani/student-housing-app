@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DetailedListing: UIViewController {
+class DetailedListing: UIViewController, UIScrollViewDelegate {
     
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -26,6 +26,12 @@ class DetailedListing: UIViewController {
         view.backgroundColor = .white
         setupView()
     }
+    
+    override func viewDidLayoutSubviews()
+      {
+       scrollView.delegate = self
+       scrollView.contentSize = CGSize(width:self.view.frame.size.width, height: 1000) // set height according you
+      }
     
     func setupView(){
         backBtn()
@@ -50,6 +56,7 @@ class DetailedListing: UIViewController {
         contentView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor).isActive = true
         contentView.topAnchor.constraint(equalTo: self.scrollView.topAnchor).isActive = true
         contentView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor).isActive = true
+//        scrollView.contentSize = contentView.frame.size
     }
     
     func backBtn(){
@@ -204,11 +211,12 @@ class DetailedListing: UIViewController {
     func listingUrl(){
         let urlBtn = UIButton()
         urlBtn.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(urlBtn)
+        contentView.addSubview(urlBtn)
         NSLayoutConstraint.activate([
             urlBtn.heightAnchor.constraint(equalToConstant: 25),
-            urlBtn.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15),
-            urlBtn.topAnchor.constraint(equalTo: self.listingText.bottomAnchor, constant: 10)
+            urlBtn.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+            urlBtn.topAnchor.constraint(equalTo: self.listingText.bottomAnchor, constant: 10),
+            urlBtn.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 10)
         ])
         urlBtn.setTitle("View on Facebook", for: .normal)
         urlBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
