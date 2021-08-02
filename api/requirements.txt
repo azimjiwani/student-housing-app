@@ -1,0 +1,15 @@
+facebook-scraper
+Flask
+requests
+jsonify
+flask_cors
+pymongo
+datetime
+dnspython
+regex
+python-dotenv
+Flask-RESTful
+Flask-Cors
+gunicorn
+urllib3
+bson

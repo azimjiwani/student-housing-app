@@ -74,14 +74,14 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     func setupListingsTable(){
-        listingsTable.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        listingsTable.register(SimplePostCell.self, forCellReuseIdentifier: "cell")
         listingsTable.dataSource = self
         listingsTable.delegate = self
         view.addSubview(listingsTable)
         listingsTable.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            listingsTable.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 90),
-            listingsTable.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            listingsTable.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 110),
+            listingsTable.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -20),
             listingsTable.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             listingsTable.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
         ])
@@ -92,15 +92,45 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath as IndexPath)
-        cell.textLabel?.text = self.listings[indexPath.row].listing_title
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SimplePostCell
+        cell.cellTitle.text = self.listings[indexPath.row].listing_title
+        cell.cellAddress.text = self.listings[indexPath.row].address
+        let price:Int = Int(self.listings[indexPath.row].price)
+        var priceString = "$"
+        priceString += "\(price)"
+        priceString += " / month"
+        cell.cellPrice.text = priceString
+        let bed:Int = Int(self.listings[indexPath.row].bed)
+        var bedString = "\(bed)"
+        bedString += " bed"
+        cell.cellBed.text = bedString
+        let bath:Int = Int(self.listings[indexPath.row].bath)
+        var bathString = "\(bath)"
+        bathString += " bath"
+        cell.cellBath.text = bathString
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailedListing = DetailedListing()
-        detailedListing.listingTitle = self.listings[indexPath.row].listing_title
+        detailedListing.listingTitle.text = self.listings[indexPath.row].listing_title
+        detailedListing.listingAddress.text = self.listings[indexPath.row].address
+        let price:Int = Int(self.listings[indexPath.row].price)
+        var priceString = "$"
+        priceString += "\(price)"
+        priceString += " / month"
+        detailedListing.listingPrice.text = priceString
+        let bed:Int = Int(self.listings[indexPath.row].bed)
+        var bedString = "\(bed)"
+        bedString += " bed · "
+        detailedListing.listingBed.text = bedString
+        let bath:Int = Int(self.listings[indexPath.row].bath)
+        var bathString = "\(bath)"
+        bathString += " bath"
+        detailedListing.listingBath.text = bathString
+        detailedListing.listingText.text = self.listings[indexPath.row].post_text
+        detailedListing.postURL = self.listings[indexPath.row].post_url
         self.navigationController?.pushViewController(detailedListing, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
-
 }

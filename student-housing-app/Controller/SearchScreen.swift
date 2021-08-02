@@ -121,6 +121,7 @@ class SearchScreen: UIViewController, UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let simplePost = SimplePosts()
         self.navigationController?.pushViewController(simplePost, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func configureSearchBar() {
