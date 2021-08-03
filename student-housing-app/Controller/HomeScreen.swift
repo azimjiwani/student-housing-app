@@ -44,24 +44,31 @@ class HomeScreen: UIViewController {
         label1.numberOfLines = 2
         view.addSubview(label1)
         
-        //let exploreRentalsBtnRect = CGRect(x: 30, y: labelRect1.maxY + 30, width: 200, height: 40)
-        let exploreRentalsBtn = UIButton()
-        exploreRentalsBtn.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(exploreRentalsBtn)
-        NSLayoutConstraint.activate([
-            exploreRentalsBtn.widthAnchor.constraint(equalToConstant: 200),
-            exploreRentalsBtn.heightAnchor.constraint(equalToConstant: 40),
-            exploreRentalsBtn.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30),
-            exploreRentalsBtn.topAnchor.constraint(equalTo: label1.bottomAnchor, constant: 60)
-        ])
+        let labelRect2 = CGRect(x: 30, y: self.view.center.y, width: 350, height: 150)
+        let label2 = UILabel(frame: labelRect2)
+        label2.text = "Made For Students"
+        label2.font = UIFont.boldSystemFont(ofSize: 30)
+        label2.textColor = UIColor.white
+        view.addSubview(label2)
         
         
-        exploreRentalsBtn.setTitle("Explore Rentals", for: .normal)
-        exploreRentalsBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        exploreRentalsBtn.titleLabel?.textAlignment = .center
-        exploreRentalsBtn.backgroundColor = UIColor.white
-        exploreRentalsBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
-        exploreRentalsBtn.layer.cornerRadius = 10
+//        let exploreRentalsBtn = UIButton()
+//        exploreRentalsBtn.translatesAutoresizingMaskIntoConstraints = false
+//        view.addSubview(exploreRentalsBtn)
+//        NSLayoutConstraint.activate([
+//            exploreRentalsBtn.widthAnchor.constraint(equalToConstant: 200),
+//            exploreRentalsBtn.heightAnchor.constraint(equalToConstant: 40),
+//            exploreRentalsBtn.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30),
+//            exploreRentalsBtn.topAnchor.constraint(equalTo: label1.bottomAnchor, constant: 60)
+//        ])
+//
+//
+//        exploreRentalsBtn.setTitle("Made For Students", for: .normal)
+//        exploreRentalsBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+//        exploreRentalsBtn.titleLabel?.textAlignment = .center
+//        exploreRentalsBtn.backgroundColor = UIColor.white
+//        exploreRentalsBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+//        exploreRentalsBtn.layer.cornerRadius = 10
     }
 
     @objc func searchRentalsBtnPressed(){

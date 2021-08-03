@@ -8,22 +8,26 @@
 import UIKit
 
 class SimplePostCell: UITableViewCell {
+    
+    var imageURL : URL!
+//    let imageView = UIImageView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-//        cellImage.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
-//        cellImage.leadingAnchor.constraint(equalTo:self.contentView.leadingAnchor, constant:10).isActive = true
-//        cellImage.widthAnchor.constraint(equalToConstant:70).isActive = true
-//        cellImage.heightAnchor.constraint(equalToConstant:70).isActive = true
-        
+//        listingImage.translatesAutoresizingMaskIntoConstraints = false
+//        listingImage.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
+//        listingImage.leadingAnchor.constraint(equalTo:self.contentView.leadingAnchor, constant:10).isActive = true
+//        listingImage.widthAnchor.constraint(equalToConstant:70).isActive = true
+//        listingImage.heightAnchor.constraint(equalToConstant:70).isActive = true
+//
         containerView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(containerView)
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo:self.contentView.topAnchor),
             containerView.bottomAnchor.constraint(equalTo:self.contentView.bottomAnchor),
 //            containerView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor),
-//            containerView.leadingAnchor.constraint(equalTo:self.cellImage.trailingAnchor, constant:10),
+//            containerView.leadingAnchor.constraint(equalTo:self.listingImage.trailingAnchor, constant:10),
             containerView.leadingAnchor.constraint(equalTo:self.contentView.leadingAnchor, constant:20),
             containerView.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-10),
             containerView.heightAnchor.constraint(equalToConstant:100)
@@ -77,18 +81,10 @@ class SimplePostCell: UITableViewCell {
     let containerView:UIView = {
            let view = UIView()
            view.translatesAutoresizingMaskIntoConstraints = false
-           view.clipsToBounds = true // this will make sure its children do not go out of the boundary
+           view.clipsToBounds = true
            return view
     }()
     
-//    let cellImage:UIImageView = {
-//            let img = UIImageView()
-//            img.contentMode = .scaleAspectFill // image will never be strecthed vertially or horizontally
-//            img.translatesAutoresizingMaskIntoConstraints = false // enable autolayout
-//            img.layer.cornerRadius = 35
-//            img.clipsToBounds = true
-//            return img
-//    }()
     
     let cellTitle:UILabel = {
            let label = UILabel()
@@ -129,4 +125,18 @@ class SimplePostCell: UITableViewCell {
            label.translatesAutoresizingMaskIntoConstraints = false
            return label
     }()
+}
+
+extension UIImageView {
+    func cellImage(withUrl url: URL) {
+           DispatchQueue.global().async { [weak self] in
+               if let imageData = try? Data(contentsOf: url) {
+                   if let image = UIImage(data: imageData) {
+                       DispatchQueue.main.async {
+                           self?.image = image
+                    }
+                }
+            }
+        }
+    }
 }

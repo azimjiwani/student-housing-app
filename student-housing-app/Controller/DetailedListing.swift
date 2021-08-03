@@ -11,9 +11,10 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
     
     let scrollView = UIScrollView()
     let contentView = UIView()
-    
+    let imageView = UIImageView()
     var postURL : URL!
     var imageURL : URL!
+    var imageUrl : URL!
 //    var lease : Bool?
 //    var sublet : Bool?
 //    var utilities : String?
@@ -27,18 +28,18 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
         setupView()
     }
     
-    override func viewDidLayoutSubviews()
-      {
-       scrollView.delegate = self
-       scrollView.contentSize = CGSize(width:self.view.frame.size.width, height: 1000) // set height according you
-      }
+//    override func viewDidLayoutSubviews()
+//      {
+//       scrollView.delegate = self
+//       scrollView.contentSize = CGSize(width:self.view.frame.size.width, height: 1000) // set height according you
+//      }
     
     func setupView(){
         backBtn()
         setupScrollView()
+        loadListingImage()
         setupListing()
         listingUrl()
-//        loadListingImage()
     }
     
     func setupScrollView(){
@@ -56,7 +57,6 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
         contentView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor).isActive = true
         contentView.topAnchor.constraint(equalTo: self.scrollView.topAnchor).isActive = true
         contentView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor).isActive = true
-//        scrollView.contentSize = contentView.frame.size
     }
     
     func backBtn(){
@@ -81,13 +81,32 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
         self.navigationController?.popViewController(animated: true)
     }
     
+    func loadListingImage(){
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(imageView)
+        NSLayoutConstraint.activate([
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageView.bottomAnchor.constraint(equalTo: contentView.topAnchor, constant: 300)
+        ])
+        
+        if (self.imageURL != nil){
+            imageUrl = self.imageURL
+        }else{
+            let imageUrlString = "http://swiftdeveloperblog.com/wp-content/uploads/2015/07/1.jpeg"
+            imageUrl = URL(string: imageUrlString)!
+        }
+        imageView.loadImage(withUrl: imageUrl)
+    }
+    
     func setupListing(){
         listingTitle.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(listingTitle)
         NSLayoutConstraint.activate([
             listingTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
             listingTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
-            listingTitle.topAnchor.constraint(equalTo: contentView.topAnchor),
+            listingTitle.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
             listingTitle.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -30)
         ])
         
@@ -134,26 +153,6 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
         ])
     }
     
-//    func loadListingImage(){
-//        let imageUrlString = "http://swiftdeveloperblog.com/wp-content/uploads/2015/07/1.jpeg"
-//        let imageUrl:URL = URL(string: imageUrlString)!
-//
-//        // Start background thread so that image loading does not make app unresponsive
-//         DispatchQueue.global(qos: .userInitiated).async {
-//            let imageData:NSData = NSData(contentsOf: imageUrl)!
-//            let imageView = UIImageView(frame: CGRect(x:0, y:0, width:200, height:200))
-//            imageView.center = self.view.center
-//
-//            // When from background thread, UI needs to be updated on main_queue
-//           DispatchQueue.main.async {
-//                let image = UIImage(data: imageData as Data)
-//                imageView.image = image
-//               imageView.contentMode = UIView.ContentMode.scaleAspectFit
-//                self.view.addSubview(imageView)
-//            }
-//         }
-//    }
-    
     let listingTitle:UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 30)
@@ -174,8 +173,8 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
     
     let listingAddress:UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 20)
+        label.textColor = .black
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.sizeToFit()
@@ -184,16 +183,16 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
     
     let listingBed:UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 20)
+        label.textColor = .black
         label.sizeToFit()
         return label
     }()
     
     let listingBath:UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 20)
+        label.textColor = .black
         label.sizeToFit()
         return label
     }()
@@ -231,16 +230,17 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
     }
 }
 
-//extension UIImageView {
-//    func load(url: URL) {
-//        DispatchQueue.global().async { [weak self] in
-//            if let data = try? Data(contentsOf: url) {
-//                if let image = UIImage(data: data) {
-//                    DispatchQueue.main.async {
-//                        self?.image = image
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
+extension UIImageView {
+    func loadImage(withUrl url: URL) {
+           DispatchQueue.global().async { [weak self] in
+               if let imageData = try? Data(contentsOf: url) {
+                   if let image = UIImage(data: imageData) {
+                       DispatchQueue.main.async {
+                           self?.image = image
+                    }
+                }
+            }
+        }
+    }
+}
+
