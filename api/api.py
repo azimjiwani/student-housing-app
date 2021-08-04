@@ -106,7 +106,7 @@ def get_search_results():
                 key:post[key] if key in post else -1000
                     for key in [
                         'listing_title', 'price', 'bed', 'bath', 'address', 'post_text', 'post_url', 'lease', 'sublease',
-                        'sublet', 'utilities', 'latitude', 'longitude', 'post_id'
+                        'sublet', 'utilities', 'latitude', 'longitude', 'post_id','images_lowquality'
                     ]
                 }
         output.append(data)

@@ -90,6 +90,7 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: contentView.topAnchor, constant: 300)
         ])
+        imageView.contentMode = .scaleAspectFit
         
         if (self.imageURL != nil){
             imageUrl = self.imageURL

@@ -44,12 +44,31 @@ class HomeScreen: UIViewController {
         label1.numberOfLines = 2
         view.addSubview(label1)
         
-        let labelRect2 = CGRect(x: 30, y: self.view.center.y, width: 350, height: 150)
-        let label2 = UILabel(frame: labelRect2)
+        let label2 = UILabel()
+        label2.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(label2)
+        NSLayoutConstraint.activate([
+            label2.heightAnchor.constraint(equalToConstant: 60),
+            label2.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            label2.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -130)
+        ])
         label2.text = "Made For Students"
         label2.font = UIFont.boldSystemFont(ofSize: 30)
         label2.textColor = UIColor.white
         view.addSubview(label2)
+        
+        let label3 = UILabel()
+        label3.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(label3)
+        NSLayoutConstraint.activate([
+            label3.heightAnchor.constraint(equalToConstant: 60),
+            label3.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            label3.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -80)
+        ])
+        label3.text = "By: Azim Jiwani"
+        label3.font = UIFont.boldSystemFont(ofSize: 15)
+        label3.textColor = UIColor.white
+        view.addSubview(label3)
         
         
 //        let exploreRentalsBtn = UIButton()

@@ -228,10 +228,15 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         detailedListing.listingBath.text = bathString
         detailedListing.listingText.text = self.filteredListings[indexPath.row].post_text
         detailedListing.postURL = self.filteredListings[indexPath.row].post_url
-        let imageUrlString = "http://swiftdeveloperblog.com/wp-content/uploads/2015/07/1.jpeg"
-        let imageUrl:URL = URL(string: imageUrlString)!
-        detailedListing.imageURL = imageUrl
-//        detailedListing.imageURL = self.listings[indexPath.row].images_lowquality[0]
+        
+        if (filteredListings[indexPath.row].images_lowquality!.count) > 0{
+            detailedListing.imageURL = self.filteredListings[indexPath.row].images_lowquality?[0]
+        }else{
+            let imageUrlString = "http://swiftdeveloperblog.com/wp-content/uploads/2015/07/1.jpeg"
+            let imageUrl:URL = URL(string: imageUrlString)!
+            detailedListing.imageURL = imageUrl
+        }
+        
         self.navigationController?.pushViewController(detailedListing, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
