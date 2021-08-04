@@ -12,11 +12,13 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     var listingsTable = UITableView()
     var fetchData = FetchData()
     var listings = [SimpleListing]()
+    var filteredListings = [SimpleListing]()
 
     override func viewDidLoad() {
         
         fetchData.fetchData{
             listingArray in self.listings = listingArray
+            self.filteredListings = self.listings
             DispatchQueue.main.async{
             self.listingsTable.reloadData()
             }
@@ -64,18 +66,32 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         leaseBtn.backgroundColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0)
         leaseBtn.setTitleColor(.white, for: .normal)
         subletBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
-//        subletBtn.titleColor(for: .normal) = (UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0))
         subletBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
         subletBtn.backgroundColor = .white
+        
+        filteredListings = []
+        for listing in listings {
+            if listing.lease == true{
+                filteredListings.append(listing)
+            }
+        }
+        listingsTable.reloadData()
     }
     
     @objc func subletBtnPressed(){
         subletBtn.backgroundColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0)
         subletBtn.setTitleColor(.white, for: .normal)
         leaseBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
-//        leaseBtn.titleColor(for: .normal) = (UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0))
         leaseBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
         leaseBtn.backgroundColor = .white
+        
+        filteredListings = []
+        for listing in listings {
+            if listing.sublet == true{
+                filteredListings.append(listing)
+            }
+        }
+        listingsTable.reloadData()
     }
     
     func backBtn(){
@@ -153,36 +169,36 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listings.count
+        return filteredListings.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SimplePostCell
-        cell.cellTitle.text = self.listings[indexPath.row].listing_title
-        cell.cellAddress.text = self.listings[indexPath.row].address
-        let price:Int = Int(self.listings[indexPath.row].price)
+        cell.cellTitle.text = self.filteredListings[indexPath.row].listing_title
+        cell.cellAddress.text = self.filteredListings[indexPath.row].address
+        let price:Int = Int(self.filteredListings[indexPath.row].price)
         var priceString = "$"
         priceString += "\(price)"
         priceString += " / month"
         cell.cellPrice.text = priceString
-        let bed:Int = Int(self.listings[indexPath.row].bed)
+        let bed:Int = Int(self.filteredListings[indexPath.row].bed)
         var bedString = "\(bed)"
         bedString += " bed"
         cell.cellBed.text = bedString
-        let bath:Int = Int(self.listings[indexPath.row].bath)
+        let bath:Int = Int(self.filteredListings[indexPath.row].bath)
         var bathString = "\(bath)"
         bathString += " bath"
         cell.cellBath.text = bathString
         
-        if self.listings[indexPath.row].sublet == true {
+        if self.filteredListings[indexPath.row].sublet == true {
             cell.cellRentalType.text = "Sublet"
         }
         
-        if self.listings[indexPath.row].lease == true {
+        if self.filteredListings[indexPath.row].lease == true {
             cell.cellRentalType.text = "Lease"
         }
         
-        if self.listings[indexPath.row].lease == true && self.listings[indexPath.row].sublet == true{
+        if self.filteredListings[indexPath.row].lease == true && self.filteredListings[indexPath.row].sublet == true{
             cell.cellRentalType.text = "Sublet & Lease"
         }
         
@@ -195,23 +211,23 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailedListing = DetailedListing()
-        detailedListing.listingTitle.text = self.listings[indexPath.row].listing_title
-        detailedListing.listingAddress.text = self.listings[indexPath.row].address
-        let price:Int = Int(self.listings[indexPath.row].price)
+        detailedListing.listingTitle.text = self.filteredListings[indexPath.row].listing_title
+        detailedListing.listingAddress.text = self.filteredListings[indexPath.row].address
+        let price:Int = Int(self.filteredListings[indexPath.row].price)
         var priceString = "$"
         priceString += "\(price)"
         priceString += " / month"
         detailedListing.listingPrice.text = priceString
-        let bed:Int = Int(self.listings[indexPath.row].bed)
+        let bed:Int = Int(self.filteredListings[indexPath.row].bed)
         var bedString = "\(bed)"
         bedString += " bed · "
         detailedListing.listingBed.text = bedString
-        let bath:Int = Int(self.listings[indexPath.row].bath)
+        let bath:Int = Int(self.filteredListings[indexPath.row].bath)
         var bathString = "\(bath)"
         bathString += " bath"
         detailedListing.listingBath.text = bathString
-        detailedListing.listingText.text = self.listings[indexPath.row].post_text
-        detailedListing.postURL = self.listings[indexPath.row].post_url
+        detailedListing.listingText.text = self.filteredListings[indexPath.row].post_text
+        detailedListing.postURL = self.filteredListings[indexPath.row].post_url
         let imageUrlString = "http://swiftdeveloperblog.com/wp-content/uploads/2015/07/1.jpeg"
         let imageUrl:URL = URL(string: imageUrlString)!
         detailedListing.imageURL = imageUrl
