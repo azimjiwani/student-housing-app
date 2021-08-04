@@ -63,6 +63,10 @@ for post in data['result']:
               print("didnt work")
               #continue
 
+    # parsed_dict['price'] = post['listing_price'].replace("$","")
+    # if "," in parsed_dict['price']:
+    #     parsed_dict['price'] = float(parsed_dict['price'].replace(',', ''))
+
 
     '''if "," in parsed_dict['price']:
                     parsed_dict['price'] = parsed_dict['price'].replace(",","")
@@ -178,8 +182,15 @@ for post in data['result']:
         parsed_dict['sublease'] = True
     ####
 
-    if 'sublease' in parsed_dict and 'sublet' in parsed_dict:
+    if ('sublease' in parsed_dict and 'sublet' in parsed_dict) or ('sublease' in parsed_dict and 'sublet' not in parsed_dict):
         del parsed_dict['sublease']
+        parsed_dict['sublet'] = True
+
+
+    if 'sublet' not in parsed_dict:
+        parsed_dict['sublet'] = False
+    if 'lease' not in parsed_dict:
+        parsed_dict['lease'] = False
 
     valid_keys = ["post_id", "listing_title", "price", "bed", "bath", "address", "post_url", "city", "latitude", "longitude", "post_text"]
     if all(key in parsed_dict for key in valid_keys):

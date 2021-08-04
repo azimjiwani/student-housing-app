@@ -29,13 +29,53 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
     func setupView(){
         backBtn()
-        titleLabel()
+        view.addSubview(titleLabel)
+        NSLayoutConstraint.activate([
+            titleLabel.widthAnchor.constraint(equalToConstant: 125),
+            titleLabel.heightAnchor.constraint(equalToConstant: 25),
+            titleLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 60)
+        ])
+        view.addSubview(leaseBtn)
+        NSLayoutConstraint.activate([
+            leaseBtn.widthAnchor.constraint(equalToConstant: (self.view.bounds.width / 2) - 15),
+            leaseBtn.heightAnchor.constraint(equalToConstant: 25),
+            leaseBtn.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15),
+            leaseBtn.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 10)
+        ])
+        view.addSubview(subletBtn)
+        NSLayoutConstraint.activate([
+            subletBtn.widthAnchor.constraint(equalToConstant: (self.view.bounds.width / 2) - 15),
+            subletBtn.heightAnchor.constraint(equalToConstant: 25),
+            subletBtn.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: self.view.bounds.width / 2),
+            subletBtn.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15),
+            subletBtn.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 10)
+        ])
+        
         setupListingsTable()
     }
     
 
     @objc func backBtnPressed(){
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func leaseBtnPressed(){
+        leaseBtn.backgroundColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0)
+        leaseBtn.setTitleColor(.white, for: .normal)
+        subletBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+//        subletBtn.titleColor(for: .normal) = (UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0))
+        subletBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+        subletBtn.backgroundColor = .white
+    }
+    
+    @objc func subletBtnPressed(){
+        subletBtn.backgroundColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0)
+        subletBtn.setTitleColor(.white, for: .normal)
+        leaseBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+//        leaseBtn.titleColor(for: .normal) = (UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0))
+        leaseBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+        leaseBtn.backgroundColor = .white
     }
     
     func backBtn(){
@@ -57,21 +97,46 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         backBtn.addTarget(self, action: #selector(backBtnPressed), for: .touchUpInside)
     }
     
-    func titleLabel(){
+    let titleLabel:UILabel = {
         let titleLabel = UILabel()
-        view.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            titleLabel.widthAnchor.constraint(equalToConstant: 125),
-            titleLabel.heightAnchor.constraint(equalToConstant: 25),
-            titleLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 60)
-        ])
         titleLabel.text = "Listings"
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
         titleLabel.textColor = UIColor.black
-    }
+        return titleLabel
+    }()
+    
+    let leaseBtn:UIButton = {
+        let leaseBtn = UIButton()
+        leaseBtn.translatesAutoresizingMaskIntoConstraints = false
+        leaseBtn.setTitle("Lease", for: .normal)
+        leaseBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        leaseBtn.titleLabel?.textAlignment = .center
+        leaseBtn.backgroundColor = UIColor.white
+        leaseBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+        leaseBtn.layer.cornerRadius = 10
+        leaseBtn.layer.borderWidth = 1
+        leaseBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+        leaseBtn.addTarget(self, action: #selector(leaseBtnPressed), for: .touchUpInside)
+        return leaseBtn
+    }()
+    
+    let subletBtn:UIButton = {
+        let subletBtn = UIButton()
+        subletBtn.translatesAutoresizingMaskIntoConstraints = false
+        subletBtn.setTitle("Sublet", for: .normal)
+        subletBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        subletBtn.titleLabel?.textAlignment = .center
+        subletBtn.backgroundColor = UIColor.white
+        subletBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+        subletBtn.setTitleColor(UIColor.white, for: UIControl.State.selected)
+        subletBtn.layer.cornerRadius = 10
+        subletBtn.layer.borderWidth = 1
+        subletBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+        subletBtn.addTarget(self, action: #selector(subletBtnPressed), for: .touchUpInside)
+        return subletBtn
+    }()
     
     func setupListingsTable(){
         listingsTable.register(SimplePostCell.self, forCellReuseIdentifier: "cell")
@@ -80,7 +145,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         view.addSubview(listingsTable)
         listingsTable.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            listingsTable.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 110),
+            listingsTable.topAnchor.constraint(equalTo: self.leaseBtn.bottomAnchor, constant: 10),
             listingsTable.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -20),
             listingsTable.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             listingsTable.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
@@ -108,6 +173,20 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         var bathString = "\(bath)"
         bathString += " bath"
         cell.cellBath.text = bathString
+        
+        if self.listings[indexPath.row].sublet == true {
+            cell.cellRentalType.text = "Sublet"
+        }
+        
+        if self.listings[indexPath.row].lease == true {
+            cell.cellRentalType.text = "Lease"
+        }
+        
+        if self.listings[indexPath.row].lease == true && self.listings[indexPath.row].sublet == true{
+            cell.cellRentalType.text = "Sublet & Lease"
+        }
+        
+        
         let imageUrlString = "http://swiftdeveloperblog.com/wp-content/uploads/2015/07/1.jpeg"
         let imageUrl:URL = URL(string: imageUrlString)!
         cell.imageURL = imageUrl
@@ -140,4 +219,9 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         self.navigationController?.pushViewController(detailedListing, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    func filterByScopeButton(){
+        
+    }
+    
 }

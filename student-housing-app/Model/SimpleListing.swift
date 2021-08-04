@@ -15,8 +15,8 @@ public struct SimpleListing: Codable {
     let address: String
     let post_text : String
     let post_url : URL
-//    let lease : Bool?
-//    let sublet : Bool?
+    let lease : Bool?
+    let sublet : Bool?
 //    let utilities : String?
     let latitude : Float
     let longitude : Float

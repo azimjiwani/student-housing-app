@@ -65,11 +65,20 @@ class SimplePostCell: UITableViewCell {
             cellBath.widthAnchor.constraint(equalToConstant: 50)
         ])
         
+        
         cellPrice.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(cellPrice)
         NSLayoutConstraint.activate([
             cellPrice.topAnchor.constraint(equalTo:self.cellBed.bottomAnchor, constant:5),
             cellPrice.leadingAnchor.constraint(equalTo:self.containerView.leadingAnchor),
+        ])
+        
+        cellRentalType.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(cellRentalType)
+        NSLayoutConstraint.activate([
+            cellRentalType.topAnchor.constraint(equalTo:self.cellBed.bottomAnchor, constant:5),
+            cellRentalType.trailingAnchor.constraint(equalTo:self.containerView.trailingAnchor),
+            cellRentalType.widthAnchor.constraint(equalToConstant: 200)
         ])
     }
     
@@ -124,6 +133,15 @@ class SimplePostCell: UITableViewCell {
            label.textColor = .gray
            label.translatesAutoresizingMaskIntoConstraints = false
            return label
+    }()
+    
+    let cellRentalType:UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .right
+        return label
     }()
 }
 
