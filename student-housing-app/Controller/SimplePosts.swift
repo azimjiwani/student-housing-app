@@ -13,9 +13,9 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     var fetchData = FetchData()
     var listings = [SimpleListing]()
     var filteredListings = [SimpleListing]()
-    var price:Int? = nil
-    var numOfBeds:Int? = nil
-    var numOfBaths:Int? = nil
+    var price:Float = 0
+    var numOfBeds:Float = 0
+    var numOfBaths:Float = 0
 
     override func viewDidLoad() {
         
@@ -206,27 +206,101 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         listingsTable.reloadData()
     }
     
-//    @objc func subletBtnPressed(){
-//
-//        allBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
-//        allBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
-//        allBtn.backgroundColor = .white
-//
-//        subletBtn.backgroundColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0)
-//        subletBtn.setTitleColor(.white, for: .normal)
-//
-//        leaseBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
-//        leaseBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
-//        leaseBtn.backgroundColor = .white
-//
-//        filteredListings = []
-//        for listing in listings {
-//            if listing.sublet == true{
-//                filteredListings.append(listing)
-//            }
-//        }
-//        listingsTable.reloadData()
-//    }
+    @objc func priceDownBtnPressed(){
+        
+        if (price - 50 >= 0){
+            price -= 50
+            priceLabel.text = "$" + "\(Int(price))"
+            
+            let priceDownListings = filteredListings
+            filteredListings = []
+            for listing in priceDownListings {
+                if listing.price <= price{
+                    filteredListings.append(listing)
+                }
+            }
+            listingsTable.reloadData()
+        }
+    }
+    
+    @objc func priceUpBtnPressed(){
+        
+        price += 50
+        priceLabel.text = "$" + "\(Int(price))"
+        
+        let priceUpListings = filteredListings
+        filteredListings = []
+        for listing in priceUpListings {
+            if listing.price <= price{
+                filteredListings.append(listing)
+            }
+        }
+        listingsTable.reloadData()
+    }
+    
+    @objc func bedDownBtnPressed(){
+        
+        if (numOfBeds - 1 >= 0){
+            numOfBeds -= 1
+            bedLabel.text = "\(Int(numOfBeds))"
+            
+            let priceDownListings = filteredListings
+            filteredListings = []
+            for listing in priceDownListings {
+                if listing.bed >= numOfBeds{
+                    filteredListings.append(listing)
+                }
+            }
+            listingsTable.reloadData()
+        }
+    }
+    
+    @objc func bedUpBtnPressed(){
+        
+        numOfBeds += 1
+        bedLabel.text = "\(Int(numOfBeds))"
+        
+        let priceDownListings = filteredListings
+        filteredListings = []
+        for listing in priceDownListings {
+            if listing.bed >= numOfBeds{
+                filteredListings.append(listing)
+            }
+        }
+        listingsTable.reloadData()
+    }
+    
+    @objc func bathDownBtnPressed(){
+        
+        if (numOfBaths - 1 >= 0){
+            numOfBaths -= 1
+            bathLabel.text = "\(Int(numOfBaths))"
+            
+            let priceDownListings = filteredListings
+            filteredListings = []
+            for listing in priceDownListings {
+                if listing.bath >= numOfBaths{
+                    filteredListings.append(listing)
+                }
+            }
+            listingsTable.reloadData()
+        }
+    }
+    
+    @objc func bathUpBtnPressed(){
+        
+        numOfBaths += 1
+        bathLabel.text = "\(Int(numOfBaths))"
+        
+        let priceDownListings = filteredListings
+        filteredListings = []
+        for listing in priceDownListings {
+            if listing.bath >= numOfBaths{
+                filteredListings.append(listing)
+            }
+        }
+        listingsTable.reloadData()
+    }
     
     func backBtn(){
         let backBtn = UIButton()
@@ -316,7 +390,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         priceDownBtn.layer.cornerRadius = 12.5
         priceDownBtn.layer.borderWidth = 1
         priceDownBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
-        priceDownBtn.addTarget(self, action: #selector(subletBtnPressed), for: .touchUpInside)
+        priceDownBtn.addTarget(self, action: #selector(priceDownBtnPressed), for: .touchUpInside)
         return priceDownBtn
     }()
     
@@ -333,7 +407,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         priceUpBtn.layer.cornerRadius = 12.5
         priceUpBtn.layer.borderWidth = 1
         priceUpBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
-        priceUpBtn.addTarget(self, action: #selector(subletBtnPressed), for: .touchUpInside)
+        priceUpBtn.addTarget(self, action: #selector(priceUpBtnPressed), for: .touchUpInside)
         return priceUpBtn
     }()
     
@@ -350,7 +424,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         bedDownBtn.layer.cornerRadius = 12.5
         bedDownBtn.layer.borderWidth = 1
         bedDownBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
-        bedDownBtn.addTarget(self, action: #selector(subletBtnPressed), for: .touchUpInside)
+        bedDownBtn.addTarget(self, action: #selector(bedDownBtnPressed), for: .touchUpInside)
         return bedDownBtn
     }()
     
@@ -367,7 +441,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         bedUpBtn.layer.cornerRadius = 12.5
         bedUpBtn.layer.borderWidth = 1
         bedUpBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
-        bedUpBtn.addTarget(self, action: #selector(subletBtnPressed), for: .touchUpInside)
+        bedUpBtn.addTarget(self, action: #selector(bedUpBtnPressed), for: .touchUpInside)
         return bedUpBtn
     }()
     
@@ -384,7 +458,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         bathDownBtn.layer.cornerRadius = 12.5
         bathDownBtn.layer.borderWidth = 1
         bathDownBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
-        bathDownBtn.addTarget(self, action: #selector(subletBtnPressed), for: .touchUpInside)
+        bathDownBtn.addTarget(self, action: #selector(bathDownBtnPressed), for: .touchUpInside)
         return bathDownBtn
     }()
     
@@ -401,7 +475,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         bathUpBtn.layer.cornerRadius = 12.5
         bathUpBtn.layer.borderWidth = 1
         bathUpBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
-        bathUpBtn.addTarget(self, action: #selector(subletBtnPressed), for: .touchUpInside)
+        bathUpBtn.addTarget(self, action: #selector(bathUpBtnPressed), for: .touchUpInside)
         return bathUpBtn
     }()
     
