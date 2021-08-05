@@ -3,6 +3,7 @@ import pymongo
 import jsonify
 import requests
 import urllib.parse
+import types
 
 url = "http://localhost:5000/get-unprocessed-posts/"
 data = requests.get(url = url).json()
@@ -192,7 +193,15 @@ for post in data['result']:
     if 'lease' not in parsed_dict:
         parsed_dict['lease'] = False
 
-    valid_keys = ["post_id", "listing_title", "price", "bed", "bath", "address", "post_url", "city", "latitude", "longitude", "post_text"]
+    if parsed_dict['sublet'] == False and parsed_dict['lease'] == False:
+        print('skipped')
+        continue
+
+    if isinstance(parsed_dict['sublet'], bool) == False or isinstance(parsed_dict['lease'], bool) == False:
+        print('skipped on this')
+        continue
+
+    valid_keys = ["post_id", "listing_title", "price", "bed", "bath", "address", "post_url", "city", "latitude", "longitude", "post_text", "sublet", "lease"]
     if all(key in parsed_dict for key in valid_keys):
 
         parsed_dict['parsed'] = True

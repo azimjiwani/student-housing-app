@@ -10,7 +10,7 @@ import re
 url = "http://localhost:5000/get-most-recent-post/"
 latest = requests.get(url = url).json()
 
-for post in get_posts(group=110354088989367, pages=100,timeout=60, options={"allow_extra_requests": False}):
+for post in get_posts(group=110354088989367, pages=50,timeout=60, options={"allow_extra_requests": False}):
     if post.get("listing_title"):
         if latest["post_id"] == None or (datetime.strptime(str(post['time']), '%Y-%m-%d %H:%M:%S') > datetime.strptime(str(latest['time']), '%Y-%m-%d %H:%M:%S')):
             if ("looking to sublet" in post['post_text']) or ("looking to lease" in post['post_text']) or ("looking for" in post['post_text']) or ("Looking to sublet" in post['post_text']) or ("Looking to lease" in post['post_text']) or ("Looking for" in post['post_text']):

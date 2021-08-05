@@ -13,6 +13,9 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     var fetchData = FetchData()
     var listings = [SimpleListing]()
     var filteredListings = [SimpleListing]()
+    var price:Int? = nil
+    var numOfBeds:Int? = nil
+    var numOfBaths:Int? = nil
 
     override func viewDidLoad() {
         
@@ -27,6 +30,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         super.viewDidLoad()
         view.backgroundColor = .white
         setupView()
+        allBtnPressed()
     }
     
     func setupView(){
@@ -38,20 +42,100 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
             titleLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 60)
         ])
+        
+        view.addSubview(allBtn)
+        NSLayoutConstraint.activate([
+            allBtn.widthAnchor.constraint(equalToConstant: ((self.view.bounds.width - 30) / 3)),
+            allBtn.heightAnchor.constraint(equalToConstant: 25),
+            allBtn.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15),
+            allBtn.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 10)
+        ])
+        
         view.addSubview(leaseBtn)
         NSLayoutConstraint.activate([
-            leaseBtn.widthAnchor.constraint(equalToConstant: (self.view.bounds.width / 2) - 15),
+            leaseBtn.widthAnchor.constraint(equalToConstant: ((self.view.bounds.width - 30) / 3)),
             leaseBtn.heightAnchor.constraint(equalToConstant: 25),
-            leaseBtn.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15),
+            leaseBtn.leadingAnchor.constraint(equalTo: allBtn.trailingAnchor),
             leaseBtn.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 10)
         ])
         view.addSubview(subletBtn)
         NSLayoutConstraint.activate([
-            subletBtn.widthAnchor.constraint(equalToConstant: (self.view.bounds.width / 2) - 15),
+            subletBtn.widthAnchor.constraint(equalToConstant: ((self.view.bounds.width - 30) / 3)),
             subletBtn.heightAnchor.constraint(equalToConstant: 25),
-            subletBtn.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: self.view.bounds.width / 2),
-            subletBtn.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15),
+            subletBtn.leadingAnchor.constraint(equalTo: leaseBtn.trailingAnchor),
             subletBtn.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 10)
+        ])
+        
+        view.addSubview(priceDownBtn)
+        NSLayoutConstraint.activate([
+            priceDownBtn.widthAnchor.constraint(equalToConstant: 25),
+            priceDownBtn.heightAnchor.constraint(equalToConstant: 25),
+            priceDownBtn.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15),
+//            priceDownBtn.trailingAnchor.constraint(equalTo: self.allBtn.trailingAnchor, constant: -5),
+            priceDownBtn.topAnchor.constraint(equalTo: self.allBtn.bottomAnchor, constant: 10)
+        ])
+        
+        priceLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(priceLabel)
+        NSLayoutConstraint.activate([
+            priceLabel.leadingAnchor.constraint(equalTo: self.priceDownBtn.trailingAnchor, constant: 10),
+//            priceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            priceLabel.centerYAnchor.constraint(equalTo: self.priceDownBtn.centerYAnchor)
+        ])
+        
+        view.addSubview(priceUpBtn)
+        NSLayoutConstraint.activate([
+            priceUpBtn.widthAnchor.constraint(equalToConstant: 25),
+            priceUpBtn.heightAnchor.constraint(equalToConstant: 25),
+//            priceUpBtn.leadingAnchor.constraint(equalTo: self.priceLabel.trailingAnchor, constant: 10),
+            priceUpBtn.trailingAnchor.constraint(equalTo: self.allBtn.trailingAnchor, constant: -5),
+            priceUpBtn.topAnchor.constraint(equalTo: self.allBtn.bottomAnchor, constant: 10)
+        ])
+        
+        view.addSubview(bedDownBtn)
+        NSLayoutConstraint.activate([
+            bedDownBtn.widthAnchor.constraint(equalToConstant: 25),
+            bedDownBtn.heightAnchor.constraint(equalToConstant: 25),
+            bedDownBtn.leadingAnchor.constraint(equalTo: self.leaseBtn.leadingAnchor, constant: 5),
+            bedDownBtn.topAnchor.constraint(equalTo: self.leaseBtn.bottomAnchor, constant: 10)
+        ])
+        
+        bedLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bedLabel)
+        NSLayoutConstraint.activate([
+            bedLabel.leadingAnchor.constraint(equalTo: self.bedDownBtn.trailingAnchor, constant: 10),
+            bedLabel.centerYAnchor.constraint(equalTo: self.priceDownBtn.centerYAnchor)
+        ])
+        
+        view.addSubview(bedUpBtn)
+        NSLayoutConstraint.activate([
+            bedUpBtn.widthAnchor.constraint(equalToConstant: 25),
+            bedUpBtn.heightAnchor.constraint(equalToConstant: 25),
+            bedUpBtn.trailingAnchor.constraint(equalTo: self.leaseBtn.trailingAnchor, constant: -5),
+            bedUpBtn.topAnchor.constraint(equalTo: self.leaseBtn.bottomAnchor, constant: 10)
+        ])
+        
+        view.addSubview(bathDownBtn)
+        NSLayoutConstraint.activate([
+            bathDownBtn.widthAnchor.constraint(equalToConstant: 25),
+            bathDownBtn.heightAnchor.constraint(equalToConstant: 25),
+            bathDownBtn.leadingAnchor.constraint(equalTo: self.subletBtn.leadingAnchor, constant: 5),
+            bathDownBtn.topAnchor.constraint(equalTo: self.subletBtn.bottomAnchor, constant: 10)
+        ])
+        
+        bathLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bathLabel)
+        NSLayoutConstraint.activate([
+            bathLabel.leadingAnchor.constraint(equalTo: self.bathDownBtn.trailingAnchor, constant: 10),
+            bathLabel.centerYAnchor.constraint(equalTo: self.priceDownBtn.centerYAnchor)
+        ])
+        
+        view.addSubview(bathUpBtn)
+        NSLayoutConstraint.activate([
+            bathUpBtn.widthAnchor.constraint(equalToConstant: 25),
+            bathUpBtn.heightAnchor.constraint(equalToConstant: 25),
+            bathUpBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            bathUpBtn.topAnchor.constraint(equalTo: self.subletBtn.bottomAnchor, constant: 10)
         ])
         
         setupListingsTable()
@@ -62,9 +146,31 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         self.navigationController?.popViewController(animated: true)
     }
     
+    @objc func allBtnPressed(){
+        allBtn.backgroundColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0)
+        allBtn.setTitleColor(.white, for: .normal)
+        
+        leaseBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+        leaseBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+        leaseBtn.backgroundColor = .white
+        
+        subletBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+        subletBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+        subletBtn.backgroundColor = .white
+        
+        filteredListings = self.listings
+        listingsTable.reloadData()
+    }
+    
     @objc func leaseBtnPressed(){
+        
+        allBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+        allBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+        allBtn.backgroundColor = .white
+        
         leaseBtn.backgroundColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0)
         leaseBtn.setTitleColor(.white, for: .normal)
+        
         subletBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
         subletBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
         subletBtn.backgroundColor = .white
@@ -79,8 +185,14 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     @objc func subletBtnPressed(){
+        
+        allBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+        allBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+        allBtn.backgroundColor = .white
+        
         subletBtn.backgroundColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0)
         subletBtn.setTitleColor(.white, for: .normal)
+        
         leaseBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
         leaseBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
         leaseBtn.backgroundColor = .white
@@ -93,6 +205,28 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         }
         listingsTable.reloadData()
     }
+    
+//    @objc func subletBtnPressed(){
+//
+//        allBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+//        allBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+//        allBtn.backgroundColor = .white
+//
+//        subletBtn.backgroundColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0)
+//        subletBtn.setTitleColor(.white, for: .normal)
+//
+//        leaseBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+//        leaseBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+//        leaseBtn.backgroundColor = .white
+//
+//        filteredListings = []
+//        for listing in listings {
+//            if listing.sublet == true{
+//                filteredListings.append(listing)
+//            }
+//        }
+//        listingsTable.reloadData()
+//    }
     
     func backBtn(){
         let backBtn = UIButton()
@@ -121,6 +255,21 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
         titleLabel.textColor = UIColor.black
         return titleLabel
+    }()
+    
+    let allBtn:UIButton = {
+        let allBtn = UIButton()
+        allBtn.translatesAutoresizingMaskIntoConstraints = false
+        allBtn.setTitle("All", for: .normal)
+        allBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        allBtn.titleLabel?.textAlignment = .center
+        allBtn.backgroundColor = UIColor.white
+        allBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+        allBtn.layer.cornerRadius = 10
+        allBtn.layer.borderWidth = 1
+        allBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+        allBtn.addTarget(self, action: #selector(allBtnPressed), for: .touchUpInside)
+        return allBtn
     }()
     
     let leaseBtn:UIButton = {
@@ -154,6 +303,138 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         return subletBtn
     }()
     
+    let priceDownBtn:UIButton = {
+        let priceDownBtn = UIButton()
+        priceDownBtn.translatesAutoresizingMaskIntoConstraints = false
+        priceDownBtn.setTitle("-", for: .normal)
+        priceDownBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        priceDownBtn.titleLabel?.textAlignment = .center
+        priceDownBtn.titleLabel?.baselineAdjustment = .alignCenters
+        priceDownBtn.backgroundColor = UIColor.white
+        priceDownBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+        priceDownBtn.setTitleColor(UIColor.white, for: UIControl.State.selected)
+        priceDownBtn.layer.cornerRadius = 12.5
+        priceDownBtn.layer.borderWidth = 1
+        priceDownBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+        priceDownBtn.addTarget(self, action: #selector(subletBtnPressed), for: .touchUpInside)
+        return priceDownBtn
+    }()
+    
+    let priceUpBtn:UIButton = {
+        let priceUpBtn = UIButton()
+        priceUpBtn.translatesAutoresizingMaskIntoConstraints = false
+        priceUpBtn.setTitle("+", for: .normal)
+        priceUpBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        priceUpBtn.titleLabel?.textAlignment = .center
+        priceUpBtn.titleLabel?.baselineAdjustment = .alignCenters
+        priceUpBtn.backgroundColor = UIColor.white
+        priceUpBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+        priceUpBtn.setTitleColor(UIColor.white, for: UIControl.State.selected)
+        priceUpBtn.layer.cornerRadius = 12.5
+        priceUpBtn.layer.borderWidth = 1
+        priceUpBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+        priceUpBtn.addTarget(self, action: #selector(subletBtnPressed), for: .touchUpInside)
+        return priceUpBtn
+    }()
+    
+    let bedDownBtn:UIButton = {
+        let bedDownBtn = UIButton()
+        bedDownBtn.translatesAutoresizingMaskIntoConstraints = false
+        bedDownBtn.setTitle("-", for: .normal)
+        bedDownBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        bedDownBtn.titleLabel?.textAlignment = .center
+        bedDownBtn.titleLabel?.baselineAdjustment = .alignCenters
+        bedDownBtn.backgroundColor = UIColor.white
+        bedDownBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+        bedDownBtn.setTitleColor(UIColor.white, for: UIControl.State.selected)
+        bedDownBtn.layer.cornerRadius = 12.5
+        bedDownBtn.layer.borderWidth = 1
+        bedDownBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+        bedDownBtn.addTarget(self, action: #selector(subletBtnPressed), for: .touchUpInside)
+        return bedDownBtn
+    }()
+    
+    let bedUpBtn:UIButton = {
+        let bedUpBtn = UIButton()
+        bedUpBtn.translatesAutoresizingMaskIntoConstraints = false
+        bedUpBtn.setTitle("+", for: .normal)
+        bedUpBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        bedUpBtn.titleLabel?.textAlignment = .center
+        bedUpBtn.titleLabel?.baselineAdjustment = .alignCenters
+        bedUpBtn.backgroundColor = UIColor.white
+        bedUpBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+        bedUpBtn.setTitleColor(UIColor.white, for: UIControl.State.selected)
+        bedUpBtn.layer.cornerRadius = 12.5
+        bedUpBtn.layer.borderWidth = 1
+        bedUpBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+        bedUpBtn.addTarget(self, action: #selector(subletBtnPressed), for: .touchUpInside)
+        return bedUpBtn
+    }()
+    
+    let bathDownBtn:UIButton = {
+        let bathDownBtn = UIButton()
+        bathDownBtn.translatesAutoresizingMaskIntoConstraints = false
+        bathDownBtn.setTitle("-", for: .normal)
+        bathDownBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        bathDownBtn.titleLabel?.textAlignment = .center
+        bathDownBtn.titleLabel?.baselineAdjustment = .alignCenters
+        bathDownBtn.backgroundColor = UIColor.white
+        bathDownBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+        bathDownBtn.setTitleColor(UIColor.white, for: UIControl.State.selected)
+        bathDownBtn.layer.cornerRadius = 12.5
+        bathDownBtn.layer.borderWidth = 1
+        bathDownBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+        bathDownBtn.addTarget(self, action: #selector(subletBtnPressed), for: .touchUpInside)
+        return bathDownBtn
+    }()
+    
+    let bathUpBtn:UIButton = {
+        let bathUpBtn = UIButton()
+        bathUpBtn.translatesAutoresizingMaskIntoConstraints = false
+        bathUpBtn.setTitle("+", for: .normal)
+        bathUpBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        bathUpBtn.titleLabel?.textAlignment = .center
+        bathUpBtn.titleLabel?.baselineAdjustment = .alignCenters
+        bathUpBtn.backgroundColor = UIColor.white
+        bathUpBtn.setTitleColor(UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0), for: .normal)
+        bathUpBtn.setTitleColor(UIColor.white, for: UIControl.State.selected)
+        bathUpBtn.layer.cornerRadius = 12.5
+        bathUpBtn.layer.borderWidth = 1
+        bathUpBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
+        bathUpBtn.addTarget(self, action: #selector(subletBtnPressed), for: .touchUpInside)
+        return bathUpBtn
+    }()
+    
+    let priceLabel:UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.textColor = .gray
+        label.text = "Price"
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        return label
+    }()
+    
+    let bedLabel:UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.textColor = .gray
+        label.text = "Beds"
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        return label
+    }()
+    
+    let bathLabel:UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.textColor = .gray
+        label.text = "Baths"
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        return label
+    }()
+    
     func setupListingsTable(){
         listingsTable.register(SimplePostCell.self, forCellReuseIdentifier: "cell")
         listingsTable.dataSource = self
@@ -161,7 +442,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         view.addSubview(listingsTable)
         listingsTable.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            listingsTable.topAnchor.constraint(equalTo: self.leaseBtn.bottomAnchor, constant: 10),
+            listingsTable.topAnchor.constraint(equalTo: self.priceDownBtn.bottomAnchor, constant: 10),
             listingsTable.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -20),
             listingsTable.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             listingsTable.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
@@ -199,7 +480,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         }
         
         if self.filteredListings[indexPath.row].lease == true && self.filteredListings[indexPath.row].sublet == true{
-            cell.cellRentalType.text = "Sublet & Lease"
+            cell.cellRentalType.text = "Lease & Sublet"
         }
         
         
@@ -240,9 +521,4 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         self.navigationController?.pushViewController(detailedListing, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    func filterByScopeButton(){
-        
-    }
-    
 }
