@@ -8,16 +8,15 @@
 import Foundation
 
 public struct Listing {
-    let listing_title : String?
-    let price : Float?
-    let bed : Float?
-    let bath : Float?
-    let address: String?
-    let post_text : String?
-    let post_url : URL?
-    let lease : Bool?
-    let sublet : Bool?
-//    let utilities : String?
+    let listing_title : String
+    let price : Float
+    let bed : Float
+    let bath : Float
+    let address: String
+    let post_text : String
+    let post_url : URL
+    let lease : Bool
+    let sublet : Bool
     let latitude : Float?
     let longitude : Float?
     let images_lowquality : [URL]?

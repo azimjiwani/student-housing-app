@@ -84,55 +84,55 @@ class SimplePostCell: UITableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
             
-            super.init(coder: aDecoder)
+        super.init(coder: aDecoder)
     }
     
     let containerView:UIView = {
-           let view = UIView()
-           view.translatesAutoresizingMaskIntoConstraints = false
-           view.clipsToBounds = true
-           return view
+       let view = UIView()
+       view.translatesAutoresizingMaskIntoConstraints = false
+       view.clipsToBounds = true
+       return view
     }()
     
     
     let cellTitle:UILabel = {
-           let label = UILabel()
-           label.font = UIFont.boldSystemFont(ofSize: 16)
-           label.textColor = .black
-           label.translatesAutoresizingMaskIntoConstraints = false
-           return label
+       let label = UILabel()
+       label.font = UIFont.boldSystemFont(ofSize: 16)
+       label.textColor = .black
+       label.translatesAutoresizingMaskIntoConstraints = false
+       return label
     }()
     
     let cellPrice:UILabel = {
-           let label = UILabel()
-           label.font = UIFont.boldSystemFont(ofSize: 14)
-           label.textColor = .black
-           label.translatesAutoresizingMaskIntoConstraints = false
-           return label
+       let label = UILabel()
+       label.font = UIFont.boldSystemFont(ofSize: 14)
+       label.textColor = .black
+       label.translatesAutoresizingMaskIntoConstraints = false
+       return label
     }()
     
     let cellAddress:UILabel = {
-           let label = UILabel()
-           label.font = UIFont.boldSystemFont(ofSize: 14)
-           label.textColor = .gray
-           label.translatesAutoresizingMaskIntoConstraints = false
-           return label
+       let label = UILabel()
+       label.font = UIFont.boldSystemFont(ofSize: 14)
+       label.textColor = .gray
+       label.translatesAutoresizingMaskIntoConstraints = false
+       return label
     }()
     
     let cellBed:UILabel = {
-           let label = UILabel()
-           label.font = UIFont.boldSystemFont(ofSize: 14)
-           label.textColor = .gray
-           label.translatesAutoresizingMaskIntoConstraints = false
-           return label
+       let label = UILabel()
+       label.font = UIFont.boldSystemFont(ofSize: 14)
+       label.textColor = .gray
+       label.translatesAutoresizingMaskIntoConstraints = false
+       return label
     }()
     
     let cellBath:UILabel = {
-           let label = UILabel()
-           label.font = UIFont.boldSystemFont(ofSize: 14)
-           label.textColor = .gray
-           label.translatesAutoresizingMaskIntoConstraints = false
-           return label
+       let label = UILabel()
+       label.font = UIFont.boldSystemFont(ofSize: 14)
+       label.textColor = .gray
+       label.translatesAutoresizingMaskIntoConstraints = false
+       return label
     }()
     
     let cellRentalType:UILabel = {

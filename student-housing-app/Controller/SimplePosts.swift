@@ -16,7 +16,16 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     var price:Float = 0
     var numOfBeds:Float = 0
     var numOfBaths:Float = 0
-
+    
+    var filters:Dictionary = [
+        "all" : true,
+        "lease" : false,
+        "sublet" : false,
+        "price" : 0,
+        "numOfBeds" : 0,
+        "numOfBaths" : 0
+    ] as [String : Any]
+    
     override func viewDidLoad() {
         
         fetchData.fetchData{
@@ -220,6 +229,8 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
                 }
             }
             listingsTable.reloadData()
+        }else{
+            priceLabel.text = "Price"
         }
     }
     
@@ -252,6 +263,8 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
                 }
             }
             listingsTable.reloadData()
+        }else{
+            bedLabel.text = "Beds"
         }
     }
     
@@ -272,7 +285,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
     @objc func bathDownBtnPressed(){
         
-        if (numOfBaths - 1 >= 0){
+        if (numOfBaths - 1 > 0){
             numOfBaths -= 1
             bathLabel.text = "\(Int(numOfBaths))"
             
@@ -284,6 +297,8 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
                 }
             }
             listingsTable.reloadData()
+        }else{
+            bathLabel.text = "Baths"
         }
     }
     
@@ -538,7 +553,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         cell.cellPrice.text = priceString
         let bed:Int = Int(self.filteredListings[indexPath.row].bed)
         var bedString = "\(bed)"
-        bedString += " bed"
+        bedString += " bed · "
         cell.cellBed.text = bedString
         let bath:Int = Int(self.filteredListings[indexPath.row].bath)
         var bathString = "\(bath)"
