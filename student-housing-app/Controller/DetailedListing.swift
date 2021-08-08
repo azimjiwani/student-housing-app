@@ -15,24 +15,15 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
     var postURL : URL!
     var imageURL : URL!
     var imageUrl : URL!
-//    var lease : Bool?
-//    var sublet : Bool?
-//    var utilities : String?
+    var rentalType : String!
     var latitude : Float!
     var longitude : Float!
-//    var images_lowquality : [URL]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupView()
     }
-    
-//    override func viewDidLayoutSubviews()
-//      {
-//       scrollView.delegate = self
-//       scrollView.contentSize = CGSize(width:self.view.frame.size.width, height: 1000) // set height according you
-//      }
     
     func setupView(){
         backBtn()
@@ -90,7 +81,7 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: contentView.topAnchor, constant: 300)
         ])
-        imageView.contentMode = .scaleAspectFit
+//        imageView.contentMode = .scaleAspectFit
         
         if (self.imageURL != nil){
             imageUrl = self.imageURL
@@ -99,6 +90,8 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
             imageUrl = URL(string: imageUrlString)!
         }
         imageView.loadImage(withUrl: imageUrl)
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 10
     }
     
     func setupListing(){
@@ -136,12 +129,20 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
             listingBath.topAnchor.constraint(equalTo: self.listingAddress.bottomAnchor, constant: 10)
         ])
         
+        listingType.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(listingType)
+        NSLayoutConstraint.activate([
+            listingType.heightAnchor.constraint(equalToConstant: 25),
+            listingType.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+            listingType.topAnchor.constraint(equalTo: self.listingBath.bottomAnchor, constant: 10)
+        ])
+        
         listingPrice.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(listingPrice)
         NSLayoutConstraint.activate([
             listingPrice.heightAnchor.constraint(equalToConstant: 25),
             listingPrice.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            listingPrice.topAnchor.constraint(equalTo: self.listingBath.bottomAnchor, constant: 10)
+            listingPrice.topAnchor.constraint(equalTo: self.listingType.bottomAnchor, constant: 10)
         ])
         
         listingText.translatesAutoresizingMaskIntoConstraints = false
@@ -193,6 +194,14 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
     let listingBath:UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20)
+        label.textColor = .black
+        label.sizeToFit()
+        return label
+    }()
+    
+    let listingType:UILabel = {
+        let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 20)
         label.textColor = .black
         label.sizeToFit()
         return label

@@ -16,6 +16,9 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     var price:Float = 0
     var numOfBeds:Float = 0
     var numOfBaths:Float = 0
+    var lease:Bool = false
+    var sublet:Bool = false
+    var maxPrice:Float = 0
     
     var filters:Dictionary = [
         "all" : true,
@@ -35,11 +38,25 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
             self.listingsTable.reloadData()
             }
         }
+
+        let minBeds:Float = 0
+        let minBaths:Float = 0
+        
+        for listing in listings{
+            if listing.price >= maxPrice{
+                maxPrice = listing.price
+            }
+        }
+        
+        filters["price"] = self.maxPrice
+        filters["numOfBeds"] = minBeds
+        filters["numOfBaths"] = minBaths
         
         super.viewDidLoad()
         view.backgroundColor = .white
         setupView()
         allBtnPressed()
+        updateFilters()
     }
     
     func setupView(){
@@ -80,7 +97,6 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
             priceDownBtn.widthAnchor.constraint(equalToConstant: 25),
             priceDownBtn.heightAnchor.constraint(equalToConstant: 25),
             priceDownBtn.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15),
-//            priceDownBtn.trailingAnchor.constraint(equalTo: self.allBtn.trailingAnchor, constant: -5),
             priceDownBtn.topAnchor.constraint(equalTo: self.allBtn.bottomAnchor, constant: 10)
         ])
         
@@ -88,7 +104,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         view.addSubview(priceLabel)
         NSLayoutConstraint.activate([
             priceLabel.leadingAnchor.constraint(equalTo: self.priceDownBtn.trailingAnchor, constant: 10),
-//            priceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            priceLabel.widthAnchor.constraint(equalToConstant: 45),
             priceLabel.centerYAnchor.constraint(equalTo: self.priceDownBtn.centerYAnchor)
         ])
         
@@ -96,8 +112,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         NSLayoutConstraint.activate([
             priceUpBtn.widthAnchor.constraint(equalToConstant: 25),
             priceUpBtn.heightAnchor.constraint(equalToConstant: 25),
-//            priceUpBtn.leadingAnchor.constraint(equalTo: self.priceLabel.trailingAnchor, constant: 10),
-            priceUpBtn.trailingAnchor.constraint(equalTo: self.allBtn.trailingAnchor, constant: -5),
+            priceUpBtn.trailingAnchor.constraint(equalTo: self.allBtn.trailingAnchor, constant: -2),
             priceUpBtn.topAnchor.constraint(equalTo: self.allBtn.bottomAnchor, constant: 10)
         ])
         
@@ -105,14 +120,15 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         NSLayoutConstraint.activate([
             bedDownBtn.widthAnchor.constraint(equalToConstant: 25),
             bedDownBtn.heightAnchor.constraint(equalToConstant: 25),
-            bedDownBtn.leadingAnchor.constraint(equalTo: self.leaseBtn.leadingAnchor, constant: 5),
+            bedDownBtn.leadingAnchor.constraint(equalTo: self.leaseBtn.leadingAnchor, constant: 2),
             bedDownBtn.topAnchor.constraint(equalTo: self.leaseBtn.bottomAnchor, constant: 10)
         ])
         
         bedLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bedLabel)
         NSLayoutConstraint.activate([
-            bedLabel.leadingAnchor.constraint(equalTo: self.bedDownBtn.trailingAnchor, constant: 10),
+            bedLabel.leadingAnchor.constraint(equalTo: self.bedDownBtn.trailingAnchor, constant: 5),
+            bedLabel.widthAnchor.constraint(equalToConstant: 60),
             bedLabel.centerYAnchor.constraint(equalTo: self.priceDownBtn.centerYAnchor)
         ])
         
@@ -120,7 +136,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         NSLayoutConstraint.activate([
             bedUpBtn.widthAnchor.constraint(equalToConstant: 25),
             bedUpBtn.heightAnchor.constraint(equalToConstant: 25),
-            bedUpBtn.trailingAnchor.constraint(equalTo: self.leaseBtn.trailingAnchor, constant: -5),
+            bedUpBtn.trailingAnchor.constraint(equalTo: self.leaseBtn.trailingAnchor, constant: -2),
             bedUpBtn.topAnchor.constraint(equalTo: self.leaseBtn.bottomAnchor, constant: 10)
         ])
         
@@ -128,14 +144,15 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         NSLayoutConstraint.activate([
             bathDownBtn.widthAnchor.constraint(equalToConstant: 25),
             bathDownBtn.heightAnchor.constraint(equalToConstant: 25),
-            bathDownBtn.leadingAnchor.constraint(equalTo: self.subletBtn.leadingAnchor, constant: 5),
+            bathDownBtn.leadingAnchor.constraint(equalTo: self.subletBtn.leadingAnchor, constant: 2),
             bathDownBtn.topAnchor.constraint(equalTo: self.subletBtn.bottomAnchor, constant: 10)
         ])
         
         bathLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bathLabel)
         NSLayoutConstraint.activate([
-            bathLabel.leadingAnchor.constraint(equalTo: self.bathDownBtn.trailingAnchor, constant: 10),
+            bathLabel.leadingAnchor.constraint(equalTo: self.bathDownBtn.trailingAnchor, constant: 5),
+            bathLabel.widthAnchor.constraint(equalToConstant: 60),
             bathLabel.centerYAnchor.constraint(equalTo: self.priceDownBtn.centerYAnchor)
         ])
         
@@ -167,8 +184,11 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         subletBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
         subletBtn.backgroundColor = .white
         
-        filteredListings = self.listings
-        listingsTable.reloadData()
+        filters["sublet"] = false
+        filters["all"] = true
+        filters["lease"] = false
+        updateFilters()
+        
     }
     
     @objc func leaseBtnPressed(){
@@ -184,13 +204,10 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         subletBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
         subletBtn.backgroundColor = .white
         
-        filteredListings = []
-        for listing in listings {
-            if listing.lease == true{
-                filteredListings.append(listing)
-            }
-        }
-        listingsTable.reloadData()
+        filters["sublet"] = false
+        filters["all"] = false
+        filters["lease"] = true
+        updateFilters()
     }
     
     @objc func subletBtnPressed(){
@@ -206,115 +223,86 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         leaseBtn.layer.borderColor = UIColor(red: 1.0, green: 0.3529, blue: 0.3725, alpha: 1.0).cgColor
         leaseBtn.backgroundColor = .white
         
-        filteredListings = []
-        for listing in listings {
-            if listing.sublet == true{
-                filteredListings.append(listing)
-            }
-        }
-        listingsTable.reloadData()
+        filters["sublet"] = true
+        filters["all"] = false
+        filters["lease"] = false
+        updateFilters()
     }
     
     @objc func priceDownBtnPressed(){
         
-        if (price - 50 >= 0){
+        if (price - 50 > 0){
             price -= 50
             priceLabel.text = "$" + "\(Int(price))"
             
-            let priceDownListings = filteredListings
-            filteredListings = []
-            for listing in priceDownListings {
-                if listing.price <= price{
-                    filteredListings.append(listing)
-                }
-            }
-            listingsTable.reloadData()
+            filters["price"] = price
+            updateFilters()
         }else{
             priceLabel.text = "Price"
+            price = self.maxPrice
+            filters["price"] = price
+            updateFilters()
         }
     }
     
     @objc func priceUpBtnPressed(){
-        
+
         price += 50
         priceLabel.text = "$" + "\(Int(price))"
         
-        let priceUpListings = filteredListings
-        filteredListings = []
-        for listing in priceUpListings {
-            if listing.price <= price{
-                filteredListings.append(listing)
-            }
-        }
-        listingsTable.reloadData()
+        filters["price"] = price
+        updateFilters()
     }
     
     @objc func bedDownBtnPressed(){
-        
-        if (numOfBeds - 1 >= 0){
+        if (numOfBeds - 1 > 0){
             numOfBeds -= 1
-            bedLabel.text = "\(Int(numOfBeds))"
+            bedLabel.text = "\(Int(numOfBeds))" + " bed"
             
-            let priceDownListings = filteredListings
-            filteredListings = []
-            for listing in priceDownListings {
-                if listing.bed >= numOfBeds{
-                    filteredListings.append(listing)
-                }
-            }
-            listingsTable.reloadData()
+            filters["numOfBeds"] = numOfBeds
+            updateFilters()
+            
         }else{
             bedLabel.text = "Beds"
+            numOfBeds = 0
+            filters["numOfBeds"] = numOfBeds
+            updateFilters()
         }
     }
     
     @objc func bedUpBtnPressed(){
         
         numOfBeds += 1
-        bedLabel.text = "\(Int(numOfBeds))"
+        bedLabel.text = "\(Int(numOfBeds))" + " bed"
         
-        let priceDownListings = filteredListings
-        filteredListings = []
-        for listing in priceDownListings {
-            if listing.bed >= numOfBeds{
-                filteredListings.append(listing)
-            }
-        }
-        listingsTable.reloadData()
+        filters["numOfBeds"] = numOfBeds
+        updateFilters()
     }
     
     @objc func bathDownBtnPressed(){
         
         if (numOfBaths - 1 > 0){
             numOfBaths -= 1
-            bathLabel.text = "\(Int(numOfBaths))"
+            bathLabel.text = "\(Int(numOfBaths))" + " bath"
             
-            let priceDownListings = filteredListings
-            filteredListings = []
-            for listing in priceDownListings {
-                if listing.bath >= numOfBaths{
-                    filteredListings.append(listing)
-                }
-            }
-            listingsTable.reloadData()
+            filters["numOfBaths"] = numOfBaths
+            updateFilters()
+            
         }else{
             bathLabel.text = "Baths"
+            numOfBaths = 0
+            filters["numOfBaths"] = numOfBaths
+            updateFilters()
         }
     }
     
     @objc func bathUpBtnPressed(){
-        
+
         numOfBaths += 1
-        bathLabel.text = "\(Int(numOfBaths))"
+        bathLabel.text = "\(Int(numOfBaths))" + " bath"
         
-        let priceDownListings = filteredListings
-        filteredListings = []
-        for listing in priceDownListings {
-            if listing.bath >= numOfBaths{
-                filteredListings.append(listing)
-            }
-        }
-        listingsTable.reloadData()
+        filters["numOfBaths"] = numOfBaths
+        updateFilters()
     }
     
     func backBtn(){
@@ -499,8 +487,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = .gray
         label.text = "Price"
-        label.numberOfLines = 0
-        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.textAlignment = .center
         return label
     }()
     
@@ -509,8 +496,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = .gray
         label.text = "Beds"
-        label.numberOfLines = 0
-        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.textAlignment = .center
         return label
     }()
     
@@ -519,8 +505,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = .gray
         label.text = "Baths"
-        label.numberOfLines = 0
-        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.textAlignment = .center
         return label
     }()
     
@@ -596,6 +581,17 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         var bathString = "\(bath)"
         bathString += " bath"
         detailedListing.listingBath.text = bathString
+        if self.filteredListings[indexPath.row].sublet == true {
+            detailedListing.listingType.text = "Sublet"
+        }
+        
+        if self.filteredListings[indexPath.row].lease == true {
+            detailedListing.listingType.text = "Lease"
+        }
+        
+        if self.filteredListings[indexPath.row].lease == true && self.filteredListings[indexPath.row].sublet == true{
+            detailedListing.listingType.text = "Lease & Sublet"
+        }
         detailedListing.listingText.text = self.filteredListings[indexPath.row].post_text
         detailedListing.postURL = self.filteredListings[indexPath.row].post_url
         
@@ -609,5 +605,68 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         
         self.navigationController?.pushViewController(detailedListing, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func updateFilters(){
+        filteredListings = listings
+        if filters["all"] as! Bool == true{
+            let allListings = filteredListings
+            filteredListings = []
+            for listing in allListings {
+                if listing.lease == true || listing.sublet == true{
+                    filteredListings.append(listing)
+                }
+            }
+        }
+        
+        if filters["lease"] as! Bool == true{
+            let leaseListings = filteredListings
+            filteredListings = []
+            for listing in leaseListings {
+                if listing.lease == true{
+                    filteredListings.append(listing)
+                }
+            }
+        }
+        
+        if filters["sublet"] as! Bool == true{
+            let subletListings = filteredListings
+            filteredListings = []
+            for listing in subletListings {
+                if listing.sublet == true{
+                    filteredListings.append(listing)
+                }
+            }
+        }
+        if filters["price"] as! Float != 0{
+            let priceListings = filteredListings
+            filteredListings = []
+            for listing in priceListings {
+                if listing.price <= filters["price"] as! Float{
+                    filteredListings.append(listing)
+                }
+            }
+        }
+        
+        if filters["numOfBeds"] as! Float != 0{
+            let bedListings = filteredListings
+            filteredListings = []
+            for listing in bedListings {
+                if listing.bed >= filters["numOfBeds"] as! Float{
+                    filteredListings.append(listing)
+                }
+            }
+        }
+        
+        if filters["numOfBaths"] as! Float != 0{
+            let bathListings = filteredListings
+            filteredListings = []
+            for listing in bathListings {
+                if listing.bath >= filters["numOfBaths"] as! Float{
+                    filteredListings.append(listing)
+                }
+            }
+        }
+        listingsTable.reloadData()
     }
 }

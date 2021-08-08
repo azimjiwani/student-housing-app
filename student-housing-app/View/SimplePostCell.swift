@@ -10,27 +10,18 @@ import UIKit
 class SimplePostCell: UITableViewCell {
     
     var imageURL : URL!
-//    let imageView = UIImageView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-//        listingImage.translatesAutoresizingMaskIntoConstraints = false
-//        listingImage.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
-//        listingImage.leadingAnchor.constraint(equalTo:self.contentView.leadingAnchor, constant:10).isActive = true
-//        listingImage.widthAnchor.constraint(equalToConstant:70).isActive = true
-//        listingImage.heightAnchor.constraint(equalToConstant:70).isActive = true
-//
         containerView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(containerView)
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo:self.contentView.topAnchor),
             containerView.bottomAnchor.constraint(equalTo:self.contentView.bottomAnchor),
-//            containerView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor),
-//            containerView.leadingAnchor.constraint(equalTo:self.listingImage.trailingAnchor, constant:10),
             containerView.leadingAnchor.constraint(equalTo:self.contentView.leadingAnchor, constant:20),
             containerView.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-10),
-            containerView.heightAnchor.constraint(equalToConstant:100)
+            containerView.heightAnchor.constraint(equalToConstant:100.333)
         ])
         
         
