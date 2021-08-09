@@ -236,9 +236,11 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
             priceLabel.text = "$" + "\(Int(price))"
             
             filters["price"] = price
+            priceLabel.textColor = .black
             updateFilters()
         }else{
             priceLabel.text = "Price"
+            priceLabel.textColor = .gray
             price = self.maxPrice
             filters["price"] = price
             updateFilters()
@@ -251,6 +253,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         priceLabel.text = "$" + "\(Int(price))"
         
         filters["price"] = price
+        priceLabel.textColor = .black
         updateFilters()
     }
     
@@ -260,10 +263,12 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
             bedLabel.text = "\(Int(numOfBeds))" + " bed"
             
             filters["numOfBeds"] = numOfBeds
+            bedLabel.textColor = .black
             updateFilters()
             
         }else{
             bedLabel.text = "Beds"
+            bedLabel.textColor = .gray
             numOfBeds = 0
             filters["numOfBeds"] = numOfBeds
             updateFilters()
@@ -274,6 +279,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         
         numOfBeds += 1
         bedLabel.text = "\(Int(numOfBeds))" + " bed"
+        bedLabel.textColor = .black
         
         filters["numOfBeds"] = numOfBeds
         updateFilters()
@@ -284,12 +290,14 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         if (numOfBaths - 1 > 0){
             numOfBaths -= 1
             bathLabel.text = "\(Int(numOfBaths))" + " bath"
+            bathLabel.textColor = .black
             
             filters["numOfBaths"] = numOfBaths
             updateFilters()
             
         }else{
             bathLabel.text = "Baths"
+            bathLabel.textColor = .gray
             numOfBaths = 0
             filters["numOfBaths"] = numOfBaths
             updateFilters()
@@ -300,6 +308,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
 
         numOfBaths += 1
         bathLabel.text = "\(Int(numOfBaths))" + " bath"
+        bathLabel.textColor = .black
         
         filters["numOfBaths"] = numOfBaths
         updateFilters()
@@ -557,10 +566,14 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
             cell.cellRentalType.text = "Lease & Sublet"
         }
         
-        
-        let imageUrlString = "http://swiftdeveloperblog.com/wp-content/uploads/2015/07/1.jpeg"
-        let imageUrl:URL = URL(string: imageUrlString)!
-        cell.imageURL = imageUrl
+        if (self.filteredListings[indexPath.row].images_lowquality!.count) > 0{
+            cell.imageURL = self.filteredListings[indexPath.row].images_lowquality?[0]
+        }
+        else{
+            let imageUrlString = "http://swiftdeveloperblog.com/wp-content/uploads/2015/07/1.jpeg"
+            let imageUrl:URL = URL(string: imageUrlString)!
+            cell.imageURL = imageUrl
+        }
         return cell
     }
     

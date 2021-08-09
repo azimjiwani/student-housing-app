@@ -14,7 +14,6 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
     let imageView = UIImageView()
     var postURL : URL!
     var imageURL : URL!
-    var imageUrl : URL!
     var rentalType : String!
     var latitude : Float!
     var longitude : Float!
@@ -81,15 +80,8 @@ class DetailedListing: UIViewController, UIScrollViewDelegate {
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: contentView.topAnchor, constant: 300)
         ])
-//        imageView.contentMode = .scaleAspectFit
         
-        if (self.imageURL != nil){
-            imageUrl = self.imageURL
-        }else{
-            let imageUrlString = "http://swiftdeveloperblog.com/wp-content/uploads/2015/07/1.jpeg"
-            imageUrl = URL(string: imageUrlString)!
-        }
-        imageView.loadImage(withUrl: imageUrl)
+        imageView.loadImage(withUrl: imageURL)
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 10
     }

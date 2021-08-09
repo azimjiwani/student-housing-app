@@ -10,6 +10,12 @@ import UIKit
 class SimplePostCell: UITableViewCell {
     
     var imageURL : URL!
+    var listingImage = UIImageView()
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        loadListingImage()
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -20,17 +26,18 @@ class SimplePostCell: UITableViewCell {
             containerView.topAnchor.constraint(equalTo:self.contentView.topAnchor),
             containerView.bottomAnchor.constraint(equalTo:self.contentView.bottomAnchor),
             containerView.leadingAnchor.constraint(equalTo:self.contentView.leadingAnchor, constant:20),
-            containerView.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-10),
-            containerView.heightAnchor.constraint(equalToConstant:100.333)
+            containerView.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:-20),
+            containerView.heightAnchor.constraint(equalToConstant:400)
         ])
-        
         
         cellTitle.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(cellTitle)
         NSLayoutConstraint.activate([
-            cellTitle.topAnchor.constraint(equalTo:self.containerView.topAnchor, constant:5),
-            cellTitle.leadingAnchor.constraint(equalTo:self.containerView.leadingAnchor),
-            cellTitle.trailingAnchor.constraint(equalTo:self.containerView.trailingAnchor)
+//            cellTitle.topAnchor.constraint(equalTo: listingImage2.bottomAnchor, constant:5),
+            cellTitle.topAnchor.constraint(equalTo: self.containerView.topAnchor, constant: 305),
+
+            cellTitle.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor),
+            cellTitle.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor)
         ])
         
         cellAddress.translatesAutoresizingMaskIntoConstraints = false
@@ -85,6 +92,20 @@ class SimplePostCell: UITableViewCell {
        return view
     }()
     
+    func loadListingImage(){
+        listingImage.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(listingImage)
+        NSLayoutConstraint.activate([
+            listingImage.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            listingImage.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            listingImage.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
+            listingImage.bottomAnchor.constraint(equalTo: containerView.topAnchor, constant: 290)
+        ])
+    
+        listingImage.cellImage(withUrl: imageURL)
+        listingImage.layer.masksToBounds = true
+        listingImage.layer.cornerRadius = 10
+    }
     
     let cellTitle:UILabel = {
        let label = UILabel()
