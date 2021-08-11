@@ -103,8 +103,8 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(priceLabel)
         NSLayoutConstraint.activate([
-            priceLabel.leadingAnchor.constraint(equalTo: self.priceDownBtn.trailingAnchor, constant: 10),
-            priceLabel.widthAnchor.constraint(equalToConstant: 45),
+            priceLabel.leadingAnchor.constraint(equalTo: self.priceDownBtn.trailingAnchor, constant: 4),
+            priceLabel.widthAnchor.constraint(equalToConstant: 55),
             priceLabel.centerYAnchor.constraint(equalTo: self.priceDownBtn.centerYAnchor)
         ])
         
@@ -112,7 +112,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         NSLayoutConstraint.activate([
             priceUpBtn.widthAnchor.constraint(equalToConstant: 25),
             priceUpBtn.heightAnchor.constraint(equalToConstant: 25),
-            priceUpBtn.trailingAnchor.constraint(equalTo: self.allBtn.trailingAnchor, constant: -2),
+            priceUpBtn.trailingAnchor.constraint(equalTo: self.allBtn.trailingAnchor, constant: -5),
             priceUpBtn.topAnchor.constraint(equalTo: self.allBtn.bottomAnchor, constant: 10)
         ])
         
@@ -120,14 +120,14 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         NSLayoutConstraint.activate([
             bedDownBtn.widthAnchor.constraint(equalToConstant: 25),
             bedDownBtn.heightAnchor.constraint(equalToConstant: 25),
-            bedDownBtn.leadingAnchor.constraint(equalTo: self.leaseBtn.leadingAnchor, constant: 2),
+            bedDownBtn.leadingAnchor.constraint(equalTo: self.leaseBtn.leadingAnchor, constant: 5),
             bedDownBtn.topAnchor.constraint(equalTo: self.leaseBtn.bottomAnchor, constant: 10)
         ])
         
         bedLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bedLabel)
         NSLayoutConstraint.activate([
-            bedLabel.leadingAnchor.constraint(equalTo: self.bedDownBtn.trailingAnchor, constant: 5),
+            bedLabel.leadingAnchor.constraint(equalTo: self.bedDownBtn.trailingAnchor, constant: 2),
             bedLabel.widthAnchor.constraint(equalToConstant: 60),
             bedLabel.centerYAnchor.constraint(equalTo: self.priceDownBtn.centerYAnchor)
         ])
@@ -136,7 +136,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         NSLayoutConstraint.activate([
             bedUpBtn.widthAnchor.constraint(equalToConstant: 25),
             bedUpBtn.heightAnchor.constraint(equalToConstant: 25),
-            bedUpBtn.trailingAnchor.constraint(equalTo: self.leaseBtn.trailingAnchor, constant: -2),
+            bedUpBtn.trailingAnchor.constraint(equalTo: self.leaseBtn.trailingAnchor, constant: -5),
             bedUpBtn.topAnchor.constraint(equalTo: self.leaseBtn.bottomAnchor, constant: 10)
         ])
         
@@ -144,14 +144,14 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         NSLayoutConstraint.activate([
             bathDownBtn.widthAnchor.constraint(equalToConstant: 25),
             bathDownBtn.heightAnchor.constraint(equalToConstant: 25),
-            bathDownBtn.leadingAnchor.constraint(equalTo: self.subletBtn.leadingAnchor, constant: 2),
+            bathDownBtn.leadingAnchor.constraint(equalTo: self.subletBtn.leadingAnchor, constant: 5),
             bathDownBtn.topAnchor.constraint(equalTo: self.subletBtn.bottomAnchor, constant: 10)
         ])
         
         bathLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bathLabel)
         NSLayoutConstraint.activate([
-            bathLabel.leadingAnchor.constraint(equalTo: self.bathDownBtn.trailingAnchor, constant: 5),
+            bathLabel.leadingAnchor.constraint(equalTo: self.bathDownBtn.trailingAnchor, constant: 2),
             bathLabel.widthAnchor.constraint(equalToConstant: 60),
             bathLabel.centerYAnchor.constraint(equalTo: self.priceDownBtn.centerYAnchor)
         ])
