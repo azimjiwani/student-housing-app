@@ -11,12 +11,6 @@ from bson.json_util import dumps
 app = Flask(__name__)
 app.config["DEBUG"] = True
 
-# connection_url = 'mongodb+srv://{}:{}@cluster0.oz6gy.mongodb.net/test?retryWrites=true&w=majority'.format(config.username,config.password)
-
-# connection_url = 'mongodb+srv://{}:{}@app-data.idcdy.mongodb.net/test?retryWrites=true&w=majority'.format(config.username,config.password)
-
-# connection_url = 'mongodb+srv://{}:{}@app-data.nck60.mongodb.net/test?retryWrites=true&w=majority'.format(config.username,config.password)
-
 connection_url = 'mongodb+srv://{}:{}@app-data.1cndm.mongodb.net/test?retryWrites=true&w=majority'.format(config.username,config.password)
 
 client = pymongo.MongoClient(connection_url)
@@ -33,7 +27,7 @@ def add_housing_posts():
 def add_processed_posts():
     fb_processed_posts = Database.fb_processed_posts
     content = request.get_json()
-    post_data = fb_processed_posts.insert(content)
+    post_data = fb_processed_posts.insert_one(content)
     return "success"
 
 @app.route('/update-parsed-bool/', methods=['POST'])
@@ -54,12 +48,12 @@ def get_posts():
         data = {
                 key:post[key] if post[key] is not None else -1000
                     for key in [
-                        'post_id','time','listing_title','listing_price','listing_location','post_text', 
-                        'username','images_lowquality','available','post_url','parsed'
+                        'post_id','time','listing_title','listing_price','listing_location','post_text',
+                        'images_lowquality','post_url','parsed'
                     ]
                 }
         output.append(data)
-    return jsonify({'result' : output})
+    return json.dumps(output, indent = 4)
 
 @app.route('/get-most-recent-post/', methods=['GET'])
 def get_most_recent_post():
@@ -110,7 +104,7 @@ def get_search_results():
                 key:post[key] if key in post else -1000
                     for key in [
                         'listing_title', 'price', 'bed', 'bath', 'address', 'post_text', 'post_url', 'lease', 'sublease',
-                        'sublet', 'utilities', 'latitude', 'longitude', 'post_id','images_lowquality'
+                        'sublet', 'utilities', 'latitude', 'longitude', 'post_id','images_lowquality','walk_time','bus_time','car_time'
                     ]
                 }
         output.append(data)

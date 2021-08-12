@@ -20,4 +20,7 @@ public struct Listing {
     let latitude : Float?
     let longitude : Float?
     let images_lowquality : [URL]?
+    let walk_time : Float
+    let bus_time : Float
+    let car_time : Float
 }

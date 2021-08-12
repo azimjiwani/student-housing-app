@@ -4,11 +4,12 @@ import jsonify
 import requests
 import urllib.parse
 import types
+import config
 
 url = "http://localhost:5000/get-unprocessed-posts/"
 data = requests.get(url = url).json()
 
-for post in data['result']:
+for post in data:
     post_id = post['post_id']
     parsed_dict = {}
 
@@ -63,17 +64,6 @@ for post in data['result']:
             except ValueError:
               print("didnt work")
               #continue
-
-    # parsed_dict['price'] = post['listing_price'].replace("$","")
-    # if "," in parsed_dict['price']:
-    #     parsed_dict['price'] = float(parsed_dict['price'].replace(',', ''))
-
-
-    '''if "," in parsed_dict['price']:
-                    parsed_dict['price'] = parsed_dict['price'].replace(",","")
-                    parsed_dict['price'] = float(parsed_dict['price'].replace("$",""))
-                else:
-                    parsed_dict['price'] = float(parsed_dict['price'].replace("$",""))'''
 
     for key, rx in body_dict.items():
         match = rx.search(post['post_text'])
@@ -140,17 +130,66 @@ for post in data['result']:
 
     if 'address' in parsed_dict:
         parsed_dict['address'] = parsed_dict['address'].title()
-        parsed_dict['address'] = str(parsed_dict['address']) + ', Waterloo, Canada'
-        address = parsed_dict['address']
-        url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) +'?format=json'
-        response = requests.get(url).json()
+        parsed_dict['address'] = str(parsed_dict['address'])
+        address = parsed_dict['address'] + ', Waterloo, Ontario, Canada'
+        address = address.replace(" ", "+")
+
+        response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address='+ address + '&key=' + config.API_KEY)
+        response = response.json()
         if len(response) > 0:
-            parsed_dict['latitude'] = float(response[0]["lat"])
-            parsed_dict['longitude'] = float(response[0]["lon"])
+            parsed_dict['latitude'] = response['results'][0]['geometry']['location']['lat']
+            parsed_dict['longitude'] = response['results'][0]['geometry']['location']['lng']
+
+            campus_lat = 43.469761
+            campus_long = -80.538811
+            distance_url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&"
+            response = requests.get(distance_url + 'origins=' + str(parsed_dict['latitude']) + ',' + str(parsed_dict['longitude']) + '&destinations=' + str(campus_lat) +',' + str(campus_long) + '&mode=driving' +'&key=' + config.API_KEY)
+            try:
+                campus_distance = response.json()['rows'][0]['elements'][0]['distance']['value']
+                campus_distance = campus_distance
+                parsed_dict['campus_distance'] = float(campus_distance)
+            except KeyError:
+                parsed_dict['campus_distance'] = 0      
+
+            try:
+                driving_time = response.json()['rows'][0]['elements'][0]['duration']['value']
+                driving_time = driving_time / 60
+                parsed_dict['car_time'] = round(driving_time)
+            except KeyError:
+                parsed_dict['car_time'] = 0
+
+            response = requests.get(distance_url + 'origins=' + str(parsed_dict['latitude']) + ',' + str(parsed_dict['longitude']) + '&destinations=' + str(campus_lat) +',' + str(campus_long) + '&mode=transit' +'&key=' + config.API_KEY)
+            
+            try:   
+                bus_time = response.json()['rows'][0]['elements'][0]['duration']['value']
+                bus_time = bus_time / 60
+                parsed_dict['bus_time'] = round(bus_time)
+            except KeyError:
+              print("bus failed")
+              parsed_dict['bus_time'] = 0
+
+            response = requests.get(distance_url + 'origins=' + str(parsed_dict['latitude']) + ',' + str(parsed_dict['longitude']) + '&destinations=' + str(campus_lat) +',' + str(campus_long) + '&mode=walking' +'&key=' + config.API_KEY)
+            
+            try:
+                walk_time = response.json()['rows'][0]['elements'][0]['duration']['value']
+                walk_time = walk_time / 60
+                parsed_dict['walk_time'] = round(walk_time)
+            except KeyError:
+                parsed_dict['walk_time'] = 0
+
+
+            
+        parsed_dict['city'] = "Waterloo, ON, Canada"        
         
-        parsed_dict['city'] = "Waterloo, ON, Canada"
 
     ####
+
+    if 'sublet' in parsed_dict:
+        parsed_dict['sublet'] = True
+
+    if 'lease' in parsed_dict:
+        parsed_dict['lease'] = True
+
     if ('sublet' in parsed_dict) and ('sublet1' in parsed_dict):
         if (parsed_dict['sublet']!= '') and (parsed_dict['sublet'] != parsed_dict['sublet1']):
             del parsed_dict['sublet1']
@@ -193,18 +232,25 @@ for post in data['result']:
     if 'lease' not in parsed_dict:
         parsed_dict['lease'] = False
 
-    if parsed_dict['sublet'] == False and parsed_dict['lease'] == False:
-        print('skipped')
+    # if parsed_dict['sublet'] == False and parsed_dict['lease'] == False:
+    #     print('skipped')
+    #     continue
+
+    if isinstance(parsed_dict['sublet'], bool) == False:
+        print('sublet not bool', parsed_dict['sublet'])
+        # parsed_dict['sublet'] = True
         continue
 
-    if isinstance(parsed_dict['sublet'], bool) == False or isinstance(parsed_dict['lease'], bool) == False:
-        print('skipped on this')
+    if isinstance(parsed_dict['lease'], bool) == False:
+        print('lease not bool',parsed_dict['lease'])
+        # parsed_dict['lease'] = True
         continue
 
-    valid_keys = ["post_id", "listing_title", "price", "bed", "bath", "address", "post_url", "city", "latitude", "longitude", "post_text", "sublet", "lease"]
+    
+    valid_keys = ["post_id","listing_title", "price", "bed", "bath", "address", "post_url", "city", "latitude", "longitude", "post_text", "sublet", "lease", "bus_time", "car_time", "walk_time"]
     if all(key in parsed_dict for key in valid_keys):
-
         parsed_dict['parsed'] = True
+
         url = "http://localhost:5000/add-processed-posts/"
         post = requests.post(url, json = parsed_dict)
 

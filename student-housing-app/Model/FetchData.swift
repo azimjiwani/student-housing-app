@@ -20,7 +20,7 @@ class FetchData {
                     if let responseText = String.init(data: data!, encoding: .ascii){
                         let jsonData = responseText.data(using: .utf8)!
                         listings = try! JSONDecoder().decode([SimpleListing].self, from: jsonData)
-//                        print(listings)
+                        //                        print(listings)
                         completionHandler(listings)
                     }
                 }

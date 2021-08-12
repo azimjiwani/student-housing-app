@@ -35,10 +35,10 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
             listingArray in self.listings = listingArray
             self.filteredListings = self.listings
             DispatchQueue.main.async{
-            self.listingsTable.reloadData()
+                self.listingsTable.reloadData()
             }
         }
-
+        
         let minBeds:Float = 0
         let minBaths:Float = 0
         
@@ -167,7 +167,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         setupListingsTable()
     }
     
-
+    
     @objc func backBtnPressed(){
         self.navigationController?.popViewController(animated: true)
     }
@@ -248,7 +248,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     @objc func priceUpBtnPressed(){
-
+        
         price += 50
         priceLabel.text = "$" + "\(Int(price))"
         
@@ -305,7 +305,7 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     @objc func bathUpBtnPressed(){
-
+        
         numOfBaths += 1
         bathLabel.text = "\(Int(numOfBaths))" + " bath"
         bathLabel.textColor = .black
@@ -554,6 +554,21 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         bathString += " bath"
         cell.cellBath.text = bathString
         
+        let walkTime:Int = Int(self.filteredListings[indexPath.row].walk_time)
+        var walkString = "\(walkTime)"
+        walkString += " mins"
+        cell.cellWalkTime.text = walkString
+        
+        let busTime:Int = Int(self.filteredListings[indexPath.row].bus_time)
+        var busString = "\(busTime)"
+        busString += " mins"
+        cell.cellBusTime.text = busString
+        
+        let carTime:Int = Int(self.filteredListings[indexPath.row].car_time)
+        var carString = "\(carTime)"
+        carString += " mins"
+        cell.cellCarTime.text = carString
+        
         if self.filteredListings[indexPath.row].sublet == true {
             cell.cellRentalType.text = "Sublet"
         }
@@ -564,6 +579,9 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         
         if self.filteredListings[indexPath.row].lease == true && self.filteredListings[indexPath.row].sublet == true{
             cell.cellRentalType.text = "Lease & Sublet"
+        }
+        if self.filteredListings[indexPath.row].lease == false && self.filteredListings[indexPath.row].sublet == false{
+            cell.cellRentalType.text = "Unknown"
         }
         
         if (self.filteredListings[indexPath.row].images_lowquality!.count) > 0{
@@ -594,6 +612,22 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         var bathString = "\(bath)"
         bathString += " bath"
         detailedListing.listingBath.text = bathString
+        
+        let walkTime:Int = Int(self.filteredListings[indexPath.row].walk_time)
+        var walkString = "\(walkTime)"
+        walkString += " mins"
+        detailedListing.walkTime.text = walkString
+        
+        let busTime:Int = Int(self.filteredListings[indexPath.row].bus_time)
+        var busString = "\(busTime)"
+        busString += " mins"
+        detailedListing.busTime.text = busString
+        
+        let carTime:Int = Int(self.filteredListings[indexPath.row].car_time)
+        var carString = "\(carTime)"
+        carString += " mins"
+        detailedListing.carTime.text = carString
+        
         if self.filteredListings[indexPath.row].sublet == true {
             detailedListing.listingType.text = "Sublet"
         }
@@ -604,6 +638,10 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
         
         if self.filteredListings[indexPath.row].lease == true && self.filteredListings[indexPath.row].sublet == true{
             detailedListing.listingType.text = "Lease & Sublet"
+        }
+        
+        if self.filteredListings[indexPath.row].lease == false && self.filteredListings[indexPath.row].sublet == false{
+            detailedListing.listingType.text = "Unknown"
         }
         detailedListing.listingText.text = self.filteredListings[indexPath.row].post_text
         detailedListing.postURL = self.filteredListings[indexPath.row].post_url
@@ -623,13 +661,14 @@ class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource 
     func updateFilters(){
         filteredListings = listings
         if filters["all"] as! Bool == true{
-            let allListings = filteredListings
-            filteredListings = []
-            for listing in allListings {
-                if listing.lease == true || listing.sublet == true{
-                    filteredListings.append(listing)
-                }
-            }
+            filteredListings = listings
+//            let allListings = filteredListings
+//            filteredListings = []
+//            for listing in allListings {
+//                if listing.lease == true || listing.sublet == true{
+//                    filteredListings.append(listing)
+//                }
+//            }
         }
         
         if filters["lease"] as! Bool == true{
