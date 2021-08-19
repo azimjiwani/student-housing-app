@@ -4,7 +4,6 @@
 //
 //  Created by Azim Jiwani on 2021-07-23.
 //
-
 import UIKit
 
 class DetailedListing: UIViewController, UIScrollViewDelegate {
@@ -347,4 +346,3 @@ extension UIImageView {
         }
     }
 }
-

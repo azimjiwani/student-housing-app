@@ -4,7 +4,6 @@
 //
 //  Created by Azim Jiwani on 2021-07-21.
 //
-
 import UIKit
 
 class SimplePosts: UIViewController, UITableViewDelegate, UITableViewDataSource {

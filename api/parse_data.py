@@ -257,5 +257,3 @@ for post in data:
         url = "http://localhost:5000/update-parsed-bool/"
         data = {"post_id":post_id,"parsed":True}
         result = requests.post(url, json = data)
-
-    

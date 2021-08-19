@@ -10,7 +10,7 @@ import Foundation
 class FetchData {
     func fetchData(completionHandler:@escaping ([SimpleListing]) -> Void) {
         var listings = [SimpleListing]()
-        let urlForFetchingData = "http://localhost:5000/get-search-results/"
+        let urlForFetchingData = "https://student-housing-app-deploy.herokuapp.com/get-search-results/"
         
         if let urlToServer = URL.init(string: urlForFetchingData){
             let task = URLSession.shared.dataTask(with: urlToServer) {data, response, error in
